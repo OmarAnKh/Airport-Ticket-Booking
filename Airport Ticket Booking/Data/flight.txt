@@ -1,0 +1,7 @@
+2025-03-15T08:30:00,250,USA,UK,Heathrow,12345,Business,101
+2025-04-20T14:00:00,300,France,Germany,Frankfurt,67890,Economy,102
+2025-05-10T18:45:00,500,Canada,Japan,Haneda,,First,103
+2025-06-05T06:20:00,150,Italy,Spain,Barcelona,98765,Economy,104
+2025-07-12T22:15:00,400,UAE,Australia,Sydney,54321,Business,105
+2025-08-01T12:10:00,275,India,USA,JFK,,Economy,106
+2025-09-25T19:30:00,600,Brazil,Argentina,BuenosAires,65432,First,107

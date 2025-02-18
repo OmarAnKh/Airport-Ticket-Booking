@@ -59,14 +59,23 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public void Update(User entity)
+    public bool Authontication(User user)
     {
-        throw new NotImplementedException();
-    }
+        try
+        {
+            var exist = _list.Single(data => data?.Username == user?.Username);
+            if (exist?.Role != user.Role)
+            {
+                return false;
+            }
 
-    public void Delete(User entity)
-    {
-        throw new NotImplementedException();
+            return VerifyPassword(user.Password, exist.Password);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     private static string HashPassword(string password)
