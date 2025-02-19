@@ -3,26 +3,15 @@ namespace Airport_Ticket_Booking.Models.user;
 public class UserRepository : IUserRepository
 {
     private readonly string? _fileString;
-    private static UserRepository? _instance;
     private readonly List<User> _users;
-    private static readonly Lock Lock = new();
 
-    private UserRepository(string? fileString)
+    public UserRepository(string? fileString)
     {
         _fileString = fileString;
         _users = [];
         _users = GetAllData();
     }
 
-    public static UserRepository GetInstance(string fileString)
-    {
-        lock (Lock)
-        {
-            _instance ??= new UserRepository(fileString);
-        }
-
-        return _instance;
-    }
 
     public List<User> GetAllData()
     {
@@ -39,23 +28,6 @@ public class UserRepository : IUserRepository
 
         return _users;
     }
-
-    public User? GetById(int id)
-    {
-        User? user;
-        try
-        {
-            user = _users.SingleOrDefault(userData => userData.UserId == id);
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"More than one user with this id found, {e.Message}");
-        }
-
-        return user;
-    }
-
-
     public void Create(User user)
     {
         try
@@ -71,17 +43,18 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public bool Authontication(User user)
+    public bool Authentication(User user)
     {
         try
         {
-            var exist = _users.Single(data => data.Username == user.Username);
-            return exist?.Role == user.Role && VerifyPassword(user.Password, exist.Password);
+            var exist = _users.SingleOrDefault(data => data.Username == user.Username);
+            if (exist == null) return false;
+            return VerifyPassword(user.Password, exist.Password);
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            Console.WriteLine($"Authentication error: {e.Message}");
+            return false;
         }
     }
 

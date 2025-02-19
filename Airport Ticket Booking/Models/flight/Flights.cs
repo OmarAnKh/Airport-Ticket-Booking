@@ -7,24 +7,25 @@ public class Flights
     private static Flights? _instance;
     private readonly List<Flight> _flights = [];
     private static readonly Lock Lock = new();
-    private readonly User _user;
+    private  User? _user;
     private readonly IFlightSearchServices _flightSearchServices;
     private readonly IFlightRepository _repository;
     private readonly IBookingManager _bookingManager;
 
-    private Flights(string filePath)
+    private Flights(string flightFilePath, string userFilePath)
     {
         _flightSearchServices = new FlightSearchServices();
-        _repository = new FlightRepository(filePath);
+        _repository = new FlightRepository(flightFilePath);
         _repository.GetAllData(_flights);
         _bookingManager = new BookingManager();
+        _user = null;
     }
 
-    public static Flights GetInstance(string filePath)
+    public static Flights GetInstance(string flightFilePath, string userFilePath)
     {
         lock (Lock)
         {
-            _instance ??= new Flights(filePath);
+            _instance ??= new Flights(flightFilePath, userFilePath);
         }
 
         return _instance;
@@ -64,4 +65,5 @@ public class Flights
         var myFlights = _flights.Where(flight => flight.PassengerId == 123).ToList();
         _bookingManager.DisplayFlights(myFlights);
     }
+    
 }
