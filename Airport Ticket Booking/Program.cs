@@ -4,4 +4,4 @@ using Airport_Ticket_Booking.Models.flight;
 using Airport_Ticket_Booking.Models.user;
 
 var flights = Flights.GetInstance("../../../Data/flight.txt");
-flights.BookFlight(101);
+flights.CancelFlight(101);

@@ -65,15 +65,15 @@ public class FlightRepository(string filePath) : IFlightRepository
         throw new NotImplementedException();
     }
 
-    public void Update(List<Flight> flights, string filePath)
+    public void Update(List<Flight> flights)
     {
         using StreamWriter sw = new StreamWriter(filePath);
         foreach (var flight in flights)
         {
             sw.WriteLine(
-                $"{flight?.DepartureDate},{flight?.Price},{flight?.DepartureCountry},{flight?.DestinationCountry}," +
-                $"{flight?.DepartureAirport},{flight?.ArrivalAirport},{flight?.Class},{flight?.IsBook}," +
-                $"{flight?.PassengerId},{flight!.FlightId}");
+                $"{flight.DepartureDate},{flight.Price},{flight.DepartureCountry},{flight.DestinationCountry}," +
+                $"{flight.DepartureAirport},{flight.ArrivalAirport},{flight.Class},{flight.IsBook}," +
+                $"{flight.PassengerId},{flight.FlightId}");
         }
 
         sw.Close();
@@ -84,7 +84,7 @@ public class FlightRepository(string filePath) : IFlightRepository
         throw new NotImplementedException();
     }
 
-    public void ImportFlights(string filePath)
+    public void ImportFlights(string importFilePath)
     {
         throw new NotImplementedException();
     }

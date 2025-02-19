@@ -14,7 +14,7 @@ public class UserRepository : IUserRepository
         _users = GetAllData();
     }
 
-    public static UserRepository? GetInstance(string fileString)
+    public static UserRepository GetInstance(string fileString)
     {
         lock (Lock)
         {
@@ -45,7 +45,7 @@ public class UserRepository : IUserRepository
         User? user;
         try
         {
-            user = _users.SingleOrDefault(userData => userData?.UserId == id);
+            user = _users.SingleOrDefault(userData => userData.UserId == id);
         }
         catch (Exception e)
         {
@@ -60,7 +60,7 @@ public class UserRepository : IUserRepository
     {
         try
         {
-            var userId = _users.Count != 0 ? _users.Max(u => u!.UserId) + 1 : 1;
+            var userId = _users.Count != 0 ? _users.Max(u => u.UserId) + 1 : 1;
             var hashedPassword = HashPassword(user.Password);
             File.AppendAllText(_fileString!, $"{userId},{user.Username},{hashedPassword},{user.Role}\n");
             _users.Add(new User(user.Username, hashedPassword, user.Role, userId));
@@ -75,13 +75,8 @@ public class UserRepository : IUserRepository
     {
         try
         {
-            var exist = _users.Single(data => data?.Username == user?.Username);
-            if (exist?.Role != user.Role)
-            {
-                return false;
-            }
-
-            return VerifyPassword(user.Password, exist.Password);
+            var exist = _users.Single(data => data.Username == user.Username);
+            return exist?.Role == user.Role && VerifyPassword(user.Password, exist.Password);
         }
         catch (Exception e)
         {

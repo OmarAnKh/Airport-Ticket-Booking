@@ -6,7 +6,8 @@ public class BookingManager : IBookingManager
     {
         try
         {
-            var result = flights.SingleOrDefault(flight => flight.FlightId == flightId);
+            var result = flights
+                .SingleOrDefault(flight => flight.FlightId == flightId && flight.IsBook == false);
             if (result == null)
             {
                 return false;
@@ -21,9 +22,24 @@ public class BookingManager : IBookingManager
         }
     }
 
-    public bool Cancel()
+    public bool Cancel(List<Flight> flights, int flightId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var result = flights
+                .SingleOrDefault(flight => flight.FlightId == flightId && flight.IsBook);
+            if (result == null)
+            {
+                return false;
+            }
+
+            result.IsBook = false;
+            return true;
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
     }
 
     public bool Modify()

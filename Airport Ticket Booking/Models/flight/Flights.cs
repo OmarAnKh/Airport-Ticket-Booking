@@ -3,7 +3,6 @@ namespace Airport_Ticket_Booking.Models.flight;
 public class Flights
 {
     private static Flights? _instance;
-    private readonly string _filePath;
     private readonly List<Flight> _flights = [];
     private static readonly Lock Lock = new();
     private readonly IFlightSearchServices _flightSearchServices;
@@ -12,7 +11,6 @@ public class Flights
 
     private Flights(string filePath)
     {
-        _filePath = filePath;
         _flightSearchServices = new FlightSearchServices();
         _repository = new FlightRepository(filePath);
         _repository.GetAllData(_flights);
@@ -42,10 +40,19 @@ public class Flights
 
     public void BookFlight(int flightId)
     {
-        var result = _bookingManager.Book(_flights, flightId);
-        if (result)
+        var isBooked = _bookingManager.Book(_flights, flightId);
+        if (isBooked)
         {
-            _repository.Update(_flights, _filePath);
+            _repository.Update(_flights);
+        }
+    }
+
+    public void CancelFlight(int flightId)
+    {
+        var isBooked = _bookingManager.Cancel(_flights, flightId);
+        if (isBooked)
+        {
+            _repository.Update(_flights);
         }
     }
 }
