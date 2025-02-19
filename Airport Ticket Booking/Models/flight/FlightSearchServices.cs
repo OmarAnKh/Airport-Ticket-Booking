@@ -15,7 +15,8 @@ public class FlightSearchServices : IFlightSearchServices
                       (string.IsNullOrEmpty(arrivalAirport) || flight.ArrivalAirport == arrivalAirport) &&
                       (string.IsNullOrEmpty(flightClass) || (Enum.TryParse<FlightClass>(flightClass,
                               out var parsedClass) && flight.Class == parsedClass) &&
-                          (!maxPrice.HasValue || flight.Price <= maxPrice))).ToList();
+                          (!maxPrice.HasValue || flight.Price <= maxPrice) &&
+                          flight.IsBook == false)).ToList();
         return searchResults;
     }
 }

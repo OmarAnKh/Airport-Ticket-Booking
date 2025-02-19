@@ -2,15 +2,12 @@ namespace Airport_Ticket_Booking.Models.flight;
 
 public class FlightRepository(string filePath) : IFlightRepository
 {
-    private readonly List<Flight> _flights = [];
-
-
-    public List<Flight> GetAllData()
+    public List<Flight> GetAllData(List<Flight> flights)
     {
         try
         {
-            if (_flights.Count > 0) return _flights;
-            _flights.AddRange(File.ReadAllLines(filePath)
+            if (flights.Count > 0) return flights;
+            flights.AddRange(File.ReadAllLines(filePath)
                 .Where(line => !string.IsNullOrWhiteSpace(line))
                 .Select(line => line.Split(','))
                 .Where(flight => flight.Length >= 7)
@@ -18,10 +15,10 @@ public class FlightRepository(string filePath) : IFlightRepository
                 {
                     var departureDate = DataSplitting(flight, out var price, out var departureCountry,
                         out var destinationCountry, out var departureAirport, out var arrivalAirport,
-                        out var passengerId, out var @class, out var flightId);
-                    return new Flight(departureDate, price, departureCountry, destinationCountry, arrivalAirport,
-                        departureAirport,
-                        @class, passengerId, flightId)
+                        out var passengerId, out var @class, out var isBook, out var flightId);
+                    return new Flight(departureDate, price, departureCountry, destinationCountry, departureAirport,
+                        arrivalAirport,
+                        @class, isBook, passengerId, flightId)
                     {
                         DepartureAirport = departureAirport,
                         DepartureCountry = departureCountry,
@@ -38,12 +35,12 @@ public class FlightRepository(string filePath) : IFlightRepository
             throw new Exception($"could not load flights {ex.Message}");
         }
 
-        return _flights;
+        return flights;
     }
 
     private static DateTime DataSplitting(string[] flight, out decimal price, out string departureCountry,
         out string destinationCountry, out string departureAirport, out string arrivalAirport, out string? passengerId,
-        out FlightClass @class, out int flightId)
+        out FlightClass @class, out bool isBook, out int flightId)
     {
         var departureDate = DateTime.Parse(flight[0]);
         price = decimal.Parse(flight[1]);
@@ -52,8 +49,9 @@ public class FlightRepository(string filePath) : IFlightRepository
         departureAirport = flight[4];
         arrivalAirport = flight[5];
         @class = Enum.Parse<FlightClass>(flight[6]);
-        passengerId =flight[7];
-        flightId = int.Parse(flight[8]);
+        isBook = bool.Parse(flight[7]);
+        passengerId = flight[8];
+        flightId = int.Parse(flight[9]);
         return departureDate;
     }
 
@@ -67,9 +65,18 @@ public class FlightRepository(string filePath) : IFlightRepository
         throw new NotImplementedException();
     }
 
-    public void Update(Flight flight)
+    public void Update(List<Flight> flights, string filePath)
     {
-        throw new NotImplementedException();
+        using StreamWriter sw = new StreamWriter(filePath);
+        foreach (var flight in flights)
+        {
+            sw.WriteLine(
+                $"{flight?.DepartureDate},{flight?.Price},{flight?.DepartureCountry},{flight?.DestinationCountry}," +
+                $"{flight?.DepartureAirport},{flight?.ArrivalAirport},{flight?.Class},{flight?.IsBook}," +
+                $"{flight?.PassengerId},{flight!.FlightId}");
+        }
+
+        sw.Close();
     }
 
     public void Delete(Flight flight)

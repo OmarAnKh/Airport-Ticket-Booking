@@ -4,17 +4,19 @@ public class Flights
 {
     private static Flights? _instance;
     private readonly string _filePath;
-    private readonly List<Flight> _flights;
+    private readonly List<Flight> _flights = [];
     private static readonly Lock Lock = new();
-    private readonly IFlightRepository _repository;
     private readonly IFlightSearchServices _flightSearchServices;
+    private readonly IFlightRepository _repository;
+    private readonly IBookingManager _bookingManager;
 
     private Flights(string filePath)
     {
         _filePath = filePath;
         _flightSearchServices = new FlightSearchServices();
         _repository = new FlightRepository(filePath);
-        _flights = _repository.GetAllData();
+        _repository.GetAllData(_flights);
+        _bookingManager = new BookingManager();
     }
 
     public static Flights GetInstance(string filePath)
@@ -36,5 +38,14 @@ public class Flights
             departureDate,
             departureAirport, arrivalAirport, flightClass, maxPrice);
         Console.Read();
+    }
+
+    public void BookFlight(int flightId)
+    {
+        var result = _bookingManager.Book(_flights, flightId);
+        if (result)
+        {
+            _repository.Update(_flights, _filePath);
+        }
     }
 }
