@@ -1,3 +1,5 @@
+using Airport_Ticket_Booking.Models.user;
+
 namespace Airport_Ticket_Booking.Models.flight;
 
 public class Flights
@@ -5,6 +7,7 @@ public class Flights
     private static Flights? _instance;
     private readonly List<Flight> _flights = [];
     private static readonly Lock Lock = new();
+    private readonly User _user;
     private readonly IFlightSearchServices _flightSearchServices;
     private readonly IFlightRepository _repository;
     private readonly IBookingManager _bookingManager;
@@ -54,5 +57,11 @@ public class Flights
         {
             _repository.Update(_flights);
         }
+    }
+
+    public void ShowMyFlights()
+    {
+        var myFlights = _flights.Where(flight => flight.PassengerId == 123).ToList();
+        _bookingManager.DisplayFlights(myFlights);
     }
 }

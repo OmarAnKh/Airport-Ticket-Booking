@@ -46,4 +46,15 @@ public class BookingManager : IBookingManager
     {
         throw new NotImplementedException();
     }
+
+    public void DisplayFlights(List<Flight> flights)
+    {
+        foreach (var flight in flights)
+        {
+            Console.WriteLine(
+                $"Flight: {flight.FlightId}, Departure Date: {flight.DepartureDate}, Departure Country:{flight.DepartureCountry}, " +
+                $"Destination Country:{flight.DestinationCountry}, Departure Airport: {flight.DepartureAirport}, Arrival Airport: {flight.ArrivalAirport}" +
+                $", Flight Class: {flight.Class}\n");
+        }
+    }
 }

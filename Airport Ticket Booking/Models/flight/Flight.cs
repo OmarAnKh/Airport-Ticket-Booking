@@ -4,7 +4,7 @@ public class Flight
 {
     public Flight(DateTime departureDate, decimal price, string? departureCountry, string? destinationCountry,
         string departureAirport,
-        string? arrivalAirport, FlightClass @class, bool isBook, string? passengerId = null, int flightId = 0)
+        string? arrivalAirport, FlightClass @class, bool isBook, int passengerId = 0, int flightId = 0)
     {
         DepartureDate = departureDate;
         Price = price;
@@ -28,7 +28,7 @@ public class Flight
     public required string? DepartureAirport { get; init; }
     public required string? DestinationCountry { get; init; }
     public required string? ArrivalAirport { get; init; }
-    public string? PassengerId { get; set; }
+    public int PassengerId { get; set; }
     public FlightClass Class { get; set; }
 
     public required decimal Price

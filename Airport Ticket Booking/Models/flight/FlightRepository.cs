@@ -39,7 +39,7 @@ public class FlightRepository(string filePath) : IFlightRepository
     }
 
     private static DateTime DataSplitting(string[] flight, out decimal price, out string departureCountry,
-        out string destinationCountry, out string departureAirport, out string arrivalAirport, out string? passengerId,
+        out string destinationCountry, out string departureAirport, out string arrivalAirport, out int passengerId,
         out FlightClass @class, out bool isBook, out int flightId)
     {
         var departureDate = DateTime.Parse(flight[0]);
@@ -50,7 +50,7 @@ public class FlightRepository(string filePath) : IFlightRepository
         arrivalAirport = flight[5];
         @class = Enum.Parse<FlightClass>(flight[6]);
         isBook = bool.Parse(flight[7]);
-        passengerId = flight[8];
+        passengerId = int.Parse(flight[8]);
         flightId = int.Parse(flight[9]);
         return departureDate;
     }
