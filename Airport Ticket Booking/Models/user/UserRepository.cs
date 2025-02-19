@@ -3,21 +3,33 @@ namespace Airport_Ticket_Booking.Models.user;
 public class UserRepository : IUserRepository
 {
     private readonly string? _fileString;
-    private readonly List<User?> _list;
+    private static UserRepository? _instance;
+    private readonly List<User> _users;
+    private static readonly Lock Lock = new();
 
-    public UserRepository(string? fileString)
+    private UserRepository(string? fileString)
     {
         _fileString = fileString;
-        _list = [];
-        _list = GetAllData();
+        _users = [];
+        _users = GetAllData();
     }
 
-    public List<User?> GetAllData()
+    public static UserRepository? GetInstance(string fileString)
+    {
+        lock (Lock)
+        {
+            _instance ??= new UserRepository(fileString);
+        }
+
+        return _instance;
+    }
+
+    public List<User> GetAllData()
     {
         try
         {
-            if (_list.Count > 0) return _list;
-            _list.AddRange(File.ReadAllLines(_fileString!).Select(line => line.Split(","))
+            if (_users.Count > 0) return _users;
+            _users.AddRange(File.ReadAllLines(_fileString!).Select(line => line.Split(","))
                 .Select(data => new User(data[1], data[2], data[3], int.Parse(data[0]))));
         }
         catch (Exception e)
@@ -25,7 +37,7 @@ public class UserRepository : IUserRepository
             throw new Exception(e.Message);
         }
 
-        return _list;
+        return _users;
     }
 
     public User? GetById(int id)
@@ -33,7 +45,7 @@ public class UserRepository : IUserRepository
         User? user;
         try
         {
-            user = _list.SingleOrDefault(userData => userData?.UserId == id);
+            user = _users.SingleOrDefault(userData => userData?.UserId == id);
         }
         catch (Exception e)
         {
@@ -48,10 +60,10 @@ public class UserRepository : IUserRepository
     {
         try
         {
-            var userId = _list.Count != 0 ? _list.Max(u => u!.UserId) + 1 : 1;
+            var userId = _users.Count != 0 ? _users.Max(u => u!.UserId) + 1 : 1;
             var hashedPassword = HashPassword(user.Password);
             File.AppendAllText(_fileString!, $"{userId},{user.Username},{hashedPassword},{user.Role}\n");
-            _list.Add(new User(user.Username, hashedPassword, user.Role, userId));
+            _users.Add(new User(user.Username, hashedPassword, user.Role, userId));
         }
         catch (Exception e)
         {
@@ -63,7 +75,7 @@ public class UserRepository : IUserRepository
     {
         try
         {
-            var exist = _list.Single(data => data?.Username == user?.Username);
+            var exist = _users.Single(data => data?.Username == user?.Username);
             if (exist?.Role != user.Role)
             {
                 return false;

@@ -1,7 +1,10 @@
-2025-03-15T08:30:00,250,USA,UK,Heathrow,12345,Business,101
-2025-04-20T14:00:00,300,France,Germany,Frankfurt,67890,Economy,102
-2025-05-10T18:45:00,500,Canada,Japan,Haneda,,First,103
-2025-06-05T06:20:00,150,Italy,Spain,Barcelona,98765,Economy,104
-2025-07-12T22:15:00,400,UAE,Australia,Sydney,54321,Business,105
-2025-08-01T12:10:00,275,India,USA,JFK,,Economy,106
-2025-09-25T19:30:00,600,Brazil,Argentina,BuenosAires,65432,First,107
+2025-03-10T14:45:00,320.50,Germany,Italy,Munich,Fiumicino,Business,P123,101
+2025-04-05T09:30:00,275.00,USA,Canada,JFK,Toronto,Economy,P124,102
+2025-05-15T18:00:00,450.75,France,Spain,Charles de Gaulle,Barceló,First,P125,103
+2025-06-20T22:15:00,390.00,UK,Germany,Heathrow,Frankfurt,Business,P126,104
+2025-07-30T06:05:00,210.50,Italy,USA,Venice,LaGuardia,Economy,P127,105
+2025-08-25T12:00:00,510.00,Australia,Japan,Sydney,Haneda,First,P128,106
+2025-09-10T17:40:00,270.00,India,China,Delhi,Beijing,Economy,P129,107
+2025-10-15T23:20:00,600.00,Brazil,Argentina,Sao Paulo,Buenos Aires,First,P130,108
+2025-11-02T08:10:00,330.00,South Korea,USA,Incheon,LAX,Business,P131,109
+2025-12-19T15:30:00,485.00,Canada,UK,Vancouver,LHR,First,P132,110

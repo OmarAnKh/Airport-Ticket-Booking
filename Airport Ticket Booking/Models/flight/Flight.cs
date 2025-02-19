@@ -2,31 +2,34 @@ namespace Airport_Ticket_Booking.Models.flight;
 
 public class Flight
 {
-    public Flight(DateTime departureDate, int price, string? departureCountry, string? destinationCountry,
+    public Flight(DateTime departureDate, decimal price, string? departureCountry, string? destinationCountry,
+        string departureAirport,
         string? arrivalAirport, FlightClass @class, string? passengerId = null, int flightId = 0)
     {
         DepartureDate = departureDate;
         Price = price;
         DepartureCountry = departureCountry;
         DestinationCountry = destinationCountry;
+        DepartureAirport = departureAirport;
         ArrivalAirport = arrivalAirport;
         PassengerId = passengerId;
         Class = @class;
         FlightId = flightId;
     }
 
-    public int FlightId { get; init; }
-    private int _price;
+    private int FlightId { get; init; }
+    private decimal _price;
     private DateTime _departureDate;
 
 
     public required string? DepartureCountry { get; init; }
+    public required string? DepartureAirport { get; init; }
     public required string? DestinationCountry { get; init; }
     public required string? ArrivalAirport { get; init; }
     public string? PassengerId { get; set; }
     public FlightClass Class { get; set; }
 
-    public required int Price
+    public required decimal Price
     {
         get => _price;
         set
@@ -54,5 +57,20 @@ public class Flight
                 throw new ArgumentException("Departure date must be today or in the future.");
             }
         }
+    }
+
+    public bool Equals(Flight? obj)
+    {
+        if (obj is null)
+            return false;
+
+        return DepartureDate == obj.DepartureDate &&
+               Price == obj.Price &&
+               DepartureCountry == obj.DepartureCountry &&
+               DestinationCountry == obj.DestinationCountry &&
+               DepartureAirport == obj.DepartureAirport &&
+               ArrivalAirport == obj.ArrivalAirport &&
+               Class == obj.Class &&
+               FlightId == obj.FlightId;
     }
 }
