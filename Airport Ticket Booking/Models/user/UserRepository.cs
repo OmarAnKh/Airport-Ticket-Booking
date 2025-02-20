@@ -28,12 +28,17 @@ public class UserRepository : IUserRepository
 
         return _users;
     }
-    public void Create(User user)
+    public bool Create(User user)
     {
         try
         {
-            var userId = _users.Count != 0 ? _users.Max(u => u.UserId) + 1 : 1;
-            var hashedPassword = HashPassword(user.Password);
+            User? usernameExist=_users.SingleOrDefault(u=>u.Username==user.Username);
+            if (usernameExist != null)
+            {
+                return false;
+            }
+            int userId = _users.Count != 0 ? _users.Max(u => u.UserId) + 1 : 1;
+            string hashedPassword = HashPassword(user.Password);
             File.AppendAllText(_fileString!, $"{userId},{user.Username},{hashedPassword},{user.Role}\n");
             _users.Add(new User(user.Username, hashedPassword, user.Role, userId));
         }
@@ -41,6 +46,7 @@ public class UserRepository : IUserRepository
         {
             throw new Exception(e.Message);
         }
+        return true;
     }
 
     public bool Authentication(User user)

@@ -12,14 +12,14 @@ public class UserServices : IUserServices
 
     public bool SignIn(string username, string password)
     {
-        var user = new User(username, password);
+        User user = new User(username, password);
         return _userRepository.Authentication(user);
     }
 
-    public void SignUp(string username, string password)
+    public bool SignUp(string username, string password)
     {
-        var user = new User(username, password);
-        _userRepository.Create(user);
+        User user = new User(username, password);
+        return _userRepository.Create(user);
         
     }
 

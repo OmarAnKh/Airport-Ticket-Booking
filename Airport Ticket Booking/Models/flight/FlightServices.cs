@@ -2,17 +2,17 @@ using Airport_Ticket_Booking.Models.user;
 
 namespace Airport_Ticket_Booking.Models.flight;
 
-public class Flights
+public class FlightServices
 {
-    private static Flights? _instance;
+    private static FlightServices? _instance;
     private readonly List<Flight> _flights = [];
-    private static readonly Lock Lock = new();
+    private readonly static Lock Lock = new();
     private  User? _user;
     private readonly IFlightSearchServices _flightSearchServices;
     private readonly IFlightRepository _repository;
     private readonly IBookingManager _bookingManager;
 
-    private Flights(string flightFilePath, string userFilePath)
+    private FlightServices(string flightFilePath)
     {
         _flightSearchServices = new FlightSearchServices();
         _repository = new FlightRepository(flightFilePath);
@@ -21,11 +21,11 @@ public class Flights
         _user = null;
     }
 
-    public static Flights GetInstance(string flightFilePath, string userFilePath)
+    public static FlightServices GetInstance(string flightFilePath)
     {
         lock (Lock)
         {
-            _instance ??= new Flights(flightFilePath, userFilePath);
+            _instance ??= new FlightServices(flightFilePath);
         }
 
         return _instance;
@@ -39,7 +39,6 @@ public class Flights
         var domFlight = _flightSearchServices.SearchFlights(_flights, departureCountry, destinationCountry,
             departureDate,
             departureAirport, arrivalAirport, flightClass, maxPrice);
-        Console.Read();
     }
 
     public void BookFlight(int flightId)
