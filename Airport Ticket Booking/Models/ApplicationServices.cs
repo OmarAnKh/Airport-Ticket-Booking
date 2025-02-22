@@ -56,5 +56,43 @@ namespace Airport_Ticket_Booking.Models
             return _flightServices.ModifyFlight(flightId, flightClassId, _user.UserId) ? 0 : 2;
         }
 
+        public int Cancel(int flightId)
+        {
+            if (_user == null)
+            {
+                return 1;
+            }
+            return _flightServices.CancelFlight(flightId) ? 0 : 2;
+        }
+
+        public bool ShowMyFlights()
+        {
+            if (_user == null)
+            {
+                return false;
+            }
+            _flightServices.ShowMyFlights(_user.UserId);
+            return true;
+        }
+        public List<Flight> FilterBookings(int? flightId = null, decimal? price = null, string? departureCountry = null, 
+            string? destinationCountry = null, DateTime? departureDate = null, string? departureAirport = null, 
+            string? arrivalAirport = null, int? passenger = null, FlightClass? flightClass = null)
+        {
+            var bookings = _flightServices.GetAllFlights(); 
+
+            var filteredBookings = bookings.Where(b =>
+                (flightId == null || b.FlightId == flightId) &&
+                (price == null || b.Price == price) &&
+                (departureCountry == null || b.DepartureCountry == departureCountry) &&
+                (destinationCountry == null || b.DestinationCountry == destinationCountry) &&
+                (departureDate == null || b.DepartureDate.Date == departureDate.Value.Date) &&
+                (departureAirport == null || b.DepartureAirport == departureAirport) &&
+                (arrivalAirport == null || b.ArrivalAirport == arrivalAirport) &&
+                (passenger == null || b.PassengerId == passenger) &&
+                (flightClass == null || b.Class == flightClass)
+            ).ToList();
+            return filteredBookings;
+        }
+
     }
 }

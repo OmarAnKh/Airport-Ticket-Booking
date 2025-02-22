@@ -1,10 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Airport_Ticket_Booking.Models;
-using Airport_Ticket_Booking.Models.flight;
-using Airport_Ticket_Booking.Models.user;
 
 var temp = ApplicationServices.GetInstance();
+if (temp == null) return ;
 temp.SignIn("Ahmad", "Ahmad@1234");
-// Console.WriteLine(temp.ModifyFlightClass(102,2));
-Console.WriteLine(temp.ModifyFlightClass(101,2));
+temp.Book(102);
+temp.ShowMyFlights();

@@ -17,6 +17,10 @@ public class FlightServices : IFlightServices
         _bookingManager = new BookingManager();
     }
 
+    public List<Flight> GetAllFlights()
+    {
+        return _flights;
+    }
     public void SearchFlights(string? departureCountry = null,
         string? destinationCountry = null, DateTime? departureDate = null,
         string? departureAirport = null, string? arrivalAirport = null, string? flightClass = null,
@@ -53,13 +57,15 @@ public class FlightServices : IFlightServices
     }
     
 
-    public void CancelFlight(int flightId)
+    public bool CancelFlight(int flightId)
     {
         var isBooked = _bookingManager.Cancel(_flights, flightId);
         if (isBooked)
         {
             _repository?.Update(_flights);
+            return true;
         }
+        return false;
     }
 
     public void ShowMyFlights(int userId)

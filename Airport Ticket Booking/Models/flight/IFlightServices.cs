@@ -9,9 +9,11 @@ namespace Airport_Ticket_Booking.Models.flight;
 
         bool BookFlight(int flightId, int userId);
 
-        void CancelFlight(int flightId);
+        public bool CancelFlight(int flightId);
 
-        void ShowMyFlights(int userId);
+        public void ShowMyFlights(int userId);
         public bool ModifyFlight(int flightId, int classNumber, int userId);
+
+        public List<Flight> GetAllFlights();
     }
 
