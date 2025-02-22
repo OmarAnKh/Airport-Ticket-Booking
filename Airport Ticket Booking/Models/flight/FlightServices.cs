@@ -2,33 +2,22 @@ using Airport_Ticket_Booking.Models.user;
 
 namespace Airport_Ticket_Booking.Models.flight;
 
-public class FlightServices
+public class FlightServices : IFlightServices
 {
-    private static FlightServices? _instance;
+   
     private readonly List<Flight> _flights = [];
-    private readonly static Lock Lock = new();
-    private  User? _user;
+    private User? _user;
     private readonly IFlightSearchServices _flightSearchServices;
-    private readonly IFlightRepository _repository;
+    private readonly IFlightRepository? _repository;
     private readonly IBookingManager _bookingManager;
 
-    private FlightServices(string flightFilePath)
+    public FlightServices(string flightFilePath)
     {
         _flightSearchServices = new FlightSearchServices();
-        _repository = new FlightRepository(flightFilePath);
-        _repository.GetAllData(_flights);
+        _repository = FlightRepository.GetInstance(flightFilePath);
+        _repository?.GetAllData(_flights);
         _bookingManager = new BookingManager();
         _user = null;
-    }
-
-    public static FlightServices GetInstance(string flightFilePath)
-    {
-        lock (Lock)
-        {
-            _instance ??= new FlightServices(flightFilePath);
-        }
-
-        return _instance;
     }
 
     public void SearchFlights(string? departureCountry = null,
@@ -41,13 +30,16 @@ public class FlightServices
             departureAirport, arrivalAirport, flightClass, maxPrice);
     }
 
-    public void BookFlight(int flightId)
+    public bool BookFlight(int flightId,int userId)
     {
-        var isBooked = _bookingManager.Book(_flights, flightId);
+        var isBooked = _bookingManager.Book(_flights, flightId, userId);
         if (isBooked)
         {
             _repository.Update(_flights);
+            return true;
         }
+        return false;
+
     }
 
     public void CancelFlight(int flightId)

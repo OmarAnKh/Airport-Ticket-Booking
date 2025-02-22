@@ -10,7 +10,7 @@ public class UserServices : IUserServices
     }
 
 
-    public bool SignIn(string username, string password)
+    public User? SignIn(string username, string password)
     {
         User user = new User(username, password);
         return _userRepository.Authentication(user);

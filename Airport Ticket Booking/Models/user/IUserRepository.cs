@@ -4,6 +4,6 @@ public interface IUserRepository
 {
     public List<User> GetAllData();
     public bool Create(User user);
-    public bool Authentication(User user);
+    public User? Authentication(User user);
 
 }

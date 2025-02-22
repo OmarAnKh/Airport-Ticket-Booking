@@ -2,7 +2,7 @@ namespace Airport_Ticket_Booking.Models.flight;
 
 public class BookingManager : IBookingManager
 {
-    public bool Book(List<Flight> flights, int flightId)
+    public bool Book(List<Flight> flights, int flightId,int userId)
     {
         try
         {
@@ -14,6 +14,7 @@ public class BookingManager : IBookingManager
             }
 
             result.IsBook = true;
+            result.PassengerId = userId;
             return true;
         }
         catch (Exception ex)

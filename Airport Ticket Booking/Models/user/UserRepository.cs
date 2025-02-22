@@ -49,19 +49,22 @@ public class UserRepository : IUserRepository
         return true;
     }
 
-    public bool Authentication(User user)
+    public User? Authentication(User user)
     {
         try
         {
             var exist = _users.SingleOrDefault(data => data.Username == user.Username);
-            if (exist == null) return false;
-            return VerifyPassword(user.Password, exist.Password);
+            if (exist == null) return null;
+            if (VerifyPassword(user.Password, exist.Password))
+            {
+                return exist;
+            }
         }
         catch (Exception e)
         {
-            Console.WriteLine($"Authentication error: {e.Message}");
-            return false;
+            throw new Exception($"Authentication error: {e.Message}");
         }
+        return null;
     }
 
     private static string HashPassword(string password)
