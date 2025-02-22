@@ -3,22 +3,27 @@ namespace Airport_Ticket_Booking.Models.flight;
 public class FlightRepository : IFlightRepository
 {
     private readonly string _filePath;
-    private readonly static Lock _lock =new Lock();
+    private static readonly Lock _lock = new();
     private static FlightRepository? _instance;
+
     private FlightRepository(string filePath)
     {
         _filePath = filePath;
-
     }
 
-    public static FlightRepository? GetInstance(string filePath)
+    public static FlightRepository GetInstance(string filePath)
     {
-        lock (_lock)
+        if (_instance == null)
         {
-            _instance ??= new FlightRepository(filePath); 
+            lock (_lock)
+            {
+                _instance ??= new FlightRepository(filePath);
+            }
         }
+
         return _instance;
     }
+
     public List<Flight> GetAllData(List<Flight> flights)
     {
         try
@@ -55,6 +60,7 @@ public class FlightRepository : IFlightRepository
         return flights;
     }
 
+
     private static DateTime DataSplitting(string[] flight, out decimal price, out string departureCountry,
         out string destinationCountry, out string departureAirport, out string arrivalAirport, out int? passengerId,
         out FlightClass @class, out bool isBook, out int flightId)
@@ -67,19 +73,9 @@ public class FlightRepository : IFlightRepository
         arrivalAirport = flight[5];
         @class = Enum.Parse<FlightClass>(flight[6]);
         isBook = bool.Parse(flight[7]);
-        passengerId  = string.IsNullOrWhiteSpace(flight[8]) ? null : int.Parse(flight[8]);
+        passengerId = string.IsNullOrWhiteSpace(flight[8]) ? null : int.Parse(flight[8]);
         flightId = int.Parse(flight[9]);
         return departureDate;
-    }
-
-    public Flight? GetById(int flightId)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Create(Flight flight)
-    {
-        throw new NotImplementedException();
     }
 
     public void Update(List<Flight> flights)
@@ -96,13 +92,165 @@ public class FlightRepository : IFlightRepository
         sw.Close();
     }
 
-    public void Delete(Flight flight)
+    public Dictionary<string, object> ImportFlights(string importFilePath)
     {
-        throw new NotImplementedException();
+        List<string> errors = new();
+        List<Flight> importedFlights = new();
+
+        if (!File.Exists(importFilePath))
+        {
+            errors.Add($"Error: File '{importFilePath}' not found.");
+            return new Dictionary<string, object>
+            {
+                { "Errors", errors },
+                { "Flights", importedFlights }
+            };
+        }
+
+        using StreamReader sr = new(importFilePath);
+        string? line;
+        int lineNumber = 1;
+
+        while ((line = sr.ReadLine()) != null)
+        {
+            var flightData = line.Split(',');
+            int errorCounter = 0;
+
+            if (flightData.Length < 10)
+            {
+                errors.Add(
+                    $"Line {lineNumber}: Incomplete flight data. Expected 10 fields, found {flightData.Length}.");
+                lineNumber++;
+                continue;
+            }
+
+            DateTime? departureDate = ValidateDate(flightData[0], lineNumber, errors, ref errorCounter);
+            decimal? price = ValidateDecimal(flightData[1], "Price", lineNumber, errors, ref errorCounter);
+            string departureCountry =
+                ValidateString(flightData[2], "Departure Country", lineNumber, errors, ref errorCounter);
+            string destinationCountry =
+                ValidateString(flightData[3], "Destination Country", lineNumber, errors, ref errorCounter);
+            string departureAirport =
+                ValidateString(flightData[4], "Departure Airport", lineNumber, errors, ref errorCounter);
+            string arrivalAirport =
+                ValidateString(flightData[5], "Arrival Airport", lineNumber, errors, ref errorCounter);
+            FlightClass? @class =
+                ValidateEnum<FlightClass>(flightData[6], "Flight Class", lineNumber, errors, ref errorCounter);
+            bool? isBook = ValidateBool(flightData[7], "IsBook", lineNumber, errors, ref errorCounter);
+            int? passengerId = ValidateNullableInt(flightData[8], "Passenger ID", lineNumber, errors, ref errorCounter);
+            int? flightId = ValidateInt(flightData[9], "Flight ID", lineNumber, errors, ref errorCounter);
+
+            if (errorCounter == 0 && departureDate.HasValue && price.HasValue && @class.HasValue && isBook.HasValue &&
+                flightId.HasValue)
+            {
+                importedFlights.Add(new Flight(departureDate.Value, price.Value, departureCountry, destinationCountry,
+                    departureAirport, arrivalAirport, @class.Value, isBook.Value, passengerId, flightId.Value)
+                {
+                    DepartureCountry = departureCountry,
+                    DepartureAirport = departureAirport,
+                    DestinationCountry = destinationCountry,
+                    ArrivalAirport = arrivalAirport,
+                    Price = price.Value,
+                    DepartureDate = departureDate.Value
+                });
+            }
+
+            lineNumber++;
+        }
+
+        return new Dictionary<string, object>
+        {
+            { "Errors", errors },
+            { "Flights", importedFlights }
+        };
     }
 
-    public void ImportFlights(string importFilePath)
+    private DateTime ValidateDate(string value, int line, List<string> errors, ref int errorCounter)
     {
-        throw new NotImplementedException();
+        if (DateTime.TryParse(value, out var date))
+        {
+            if (date < DateTime.Now)
+            {
+                errors.Add($"Line {line}: Departure date '{value}' cannot be in the past.");
+                errorCounter++;
+            }
+
+            return date;
+        }
+
+        errors.Add($"Line {line}: Invalid date format '{value}'.");
+        errorCounter++;
+        return DateTime.MinValue;
+    }
+
+    private decimal ValidateDecimal(string value, string fieldName, int line, List<string> errors, ref int errorCounter)
+    {
+        if (decimal.TryParse(value, out var result) && result >= 0)
+        {
+            return result;
+        }
+
+        errors.Add($"Line {line}: Invalid {fieldName} '{value}', must be a positive number.");
+        errorCounter++;
+        return 0;
+    }
+
+    private string ValidateString(string value, string fieldName, int line, List<string> errors, ref int errorCounter)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            errors.Add($"Line {line}: {fieldName} cannot be empty.");
+            errorCounter++;
+        }
+
+        return value.Trim();
+    }
+
+    private int ValidateInt(string value, string fieldName, int line, List<string> errors, ref int errorCounter)
+    {
+        if (int.TryParse(value, out var result))
+        {
+            return result;
+        }
+
+        errors.Add($"Line {line}: Invalid {fieldName} '{value}', must be an integer.");
+        errorCounter++;
+        return 0;
+    }
+
+    private int? ValidateNullableInt(string value, string fieldName, int line, List<string> errors,
+        ref int errorCounter)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return null;
+        }
+
+        return ValidateInt(value, fieldName, line, errors, ref errorCounter);
+    }
+
+    private T ValidateEnum<T>(string value, string fieldName, int line, List<string> errors, ref int errorCounter)
+        where T : struct
+    {
+        if (Enum.TryParse(value, true, out T result))
+        {
+            return result;
+        }
+
+        errors.Add($"Line {line}: Invalid {fieldName} '{value}', must be a valid {typeof(T).Name}.");
+        errorCounter++;
+        return default!;
+    }
+
+    private bool ValidateBool(string value, string fieldName, int line, List<string> errors, ref int errorCounter)
+    {
+        if (bool.TryParse(value, out var result))
+        {
+            return result;
+        }
+
+        errors.Add($"Line {line}: Invalid {fieldName} '{value}', must be 'true' or 'false'.");
+        errorCounter++;
+        return false;
     }
 }

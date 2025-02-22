@@ -1,10 +1,8 @@
-
 namespace Airport_Ticket_Booking.Models.flight;
 
 public class FlightServices : IFlightServices
 {
-   
-    private readonly List<Flight> _flights = [];
+    private List<Flight> _flights = [];
     private readonly IFlightSearchServices _flightSearchServices;
     private readonly IFlightRepository? _repository;
     private readonly IBookingManager _bookingManager;
@@ -21,6 +19,7 @@ public class FlightServices : IFlightServices
     {
         return _flights;
     }
+
     public void SearchFlights(string? departureCountry = null,
         string? destinationCountry = null, DateTime? departureDate = null,
         string? departureAirport = null, string? arrivalAirport = null, string? flightClass = null,
@@ -30,10 +29,9 @@ public class FlightServices : IFlightServices
             departureDate,
             departureAirport, arrivalAirport, flightClass, maxPrice);
         _bookingManager.DisplayFlights(domFlight);
-        
     }
 
-    public bool BookFlight(int flightId,int userId)
+    public bool BookFlight(int flightId, int userId)
     {
         var isBooked = _bookingManager.Book(_flights, flightId, userId);
         if (isBooked)
@@ -41,21 +39,22 @@ public class FlightServices : IFlightServices
             _repository?.Update(_flights);
             return true;
         }
-        return false;
 
+        return false;
     }
 
     public bool ModifyFlight(int flightId, int classNumber, int userId)
     {
-        bool isModified = _bookingManager.ModifyClass(_flights, flightId, classNumber,userId);
+        bool isModified = _bookingManager.ModifyClass(_flights, flightId, classNumber, userId);
         if (isModified)
         {
             _repository?.Update(_flights);
             return true;
         }
+
         return false;
     }
-    
+
 
     public bool CancelFlight(int flightId)
     {
@@ -65,6 +64,7 @@ public class FlightServices : IFlightServices
             _repository?.Update(_flights);
             return true;
         }
+
         return false;
     }
 
@@ -73,6 +73,12 @@ public class FlightServices : IFlightServices
         var myFlights = _flights.Where(flight => flight.PassengerId == userId).ToList();
         _bookingManager.DisplayFlights(myFlights);
     }
-    
-    
+
+    public List<string> ImportFlightsFromCsv(string filePath)
+    {
+        Dictionary<string, object> imports = _repository.ImportFlights(filePath);
+        _flights = _flights.Concat(imports["Flights"] as List<Flight>).ToList();
+        _repository.Update(_flights);
+        return imports["Errors"] as List<string>;
+    }
 }

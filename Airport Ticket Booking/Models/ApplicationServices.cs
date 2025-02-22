@@ -15,7 +15,6 @@ namespace Airport_Ticket_Booking.Models
         {
             _flightServices = new FlightServices("../../../Data/flight.txt");
             _userServices = new UserServices("../../../Data/users.txt");
-
         }
 
         public static ApplicationServices? GetInstance()
@@ -24,8 +23,10 @@ namespace Airport_Ticket_Booking.Models
             {
                 _instance ??= new ApplicationServices();
             }
+
             return _instance;
         }
+
         public bool SignIn(string username, string password)
         {
             User? user = _userServices.SignIn(username, password);
@@ -34,16 +35,18 @@ namespace Airport_Ticket_Booking.Models
                 _user = user;
                 return true;
             }
+
             return false;
         }
+
         public int Book(int flightId)
         {
             if (_user == null)
             {
                 return 1;
             }
-            
-            return _flightServices.BookFlight(flightId,_user.UserId) ? 0 : 2;
+
+            return _flightServices.BookFlight(flightId, _user.UserId) ? 0 : 2;
         }
 
         public int ModifyFlightClass(int flightId, int flightClassId)
@@ -52,7 +55,7 @@ namespace Airport_Ticket_Booking.Models
             {
                 return 1;
             }
-            
+
             return _flightServices.ModifyFlight(flightId, flightClassId, _user.UserId) ? 0 : 2;
         }
 
@@ -62,6 +65,7 @@ namespace Airport_Ticket_Booking.Models
             {
                 return 1;
             }
+
             return _flightServices.CancelFlight(flightId) ? 0 : 2;
         }
 
@@ -71,14 +75,16 @@ namespace Airport_Ticket_Booking.Models
             {
                 return false;
             }
+
             _flightServices.ShowMyFlights(_user.UserId);
             return true;
         }
-        public List<Flight> FilterBookings(int? flightId = null, decimal? price = null, string? departureCountry = null, 
-            string? destinationCountry = null, DateTime? departureDate = null, string? departureAirport = null, 
+
+        public List<Flight> FilterBookings(int? flightId = null, decimal? price = null, string? departureCountry = null,
+            string? destinationCountry = null, DateTime? departureDate = null, string? departureAirport = null,
             string? arrivalAirport = null, int? passenger = null, FlightClass? flightClass = null)
         {
-            var bookings = _flightServices.GetAllFlights(); 
+            var bookings = _flightServices.GetAllFlights();
 
             var filteredBookings = bookings.Where(b =>
                 (flightId == null || b.FlightId == flightId) &&
@@ -94,5 +100,10 @@ namespace Airport_Ticket_Booking.Models
             return filteredBookings;
         }
 
+        public List<string> ImportFlights(string flightsCsv)
+        {
+            return _flightServices.ImportFlightsFromCsv(flightsCsv);
+            
+        }
     }
 }

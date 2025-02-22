@@ -3,7 +3,10 @@
 using Airport_Ticket_Booking.Models;
 
 var temp = ApplicationServices.GetInstance();
-if (temp == null) return ;
-temp.SignIn("Ahmad", "Ahmad@1234");
-temp.Book(102);
-temp.ShowMyFlights();
+if (temp == null) return;
+
+var errors = temp.ImportFlights("../../../Data/DataToImport.txt");
+foreach (var error in errors)
+{
+    Console.WriteLine(error);
+}
