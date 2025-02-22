@@ -43,11 +43,30 @@ public class BookingManager : IBookingManager
         }
     }
 
-    public bool Modify()
+    public bool ModifyClass(List<Flight> flights, int flightId, int classNumber, int userId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var flight=flights.SingleOrDefault(flight => flight.FlightId == flightId && flight.IsBook && flight?.PassengerId == userId);
+            if (flight == null)
+            {
+                return false;
+            }
+            if ((int)flight.Class == classNumber)
+            {
+                return true;
+            }
+            flight.Price= flight.Class.CalculateFlightPrice(flight.Price, (FlightClass)classNumber);
+            flight.Class = (FlightClass)classNumber;
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
-
+    
     public void DisplayFlights(List<Flight> flights)
     {
         foreach (var flight in flights)

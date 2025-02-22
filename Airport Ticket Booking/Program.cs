@@ -6,4 +6,5 @@ using Airport_Ticket_Booking.Models.user;
 
 var temp = ApplicationServices.GetInstance();
 temp.SignIn("Ahmad", "Ahmad@1234");
-Console.WriteLine(temp.Book(101));
+// Console.WriteLine(temp.ModifyFlightClass(102,2));
+Console.WriteLine(temp.ModifyFlightClass(101,2));

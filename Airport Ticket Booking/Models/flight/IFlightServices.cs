@@ -11,6 +11,7 @@ namespace Airport_Ticket_Booking.Models.flight;
 
         void CancelFlight(int flightId);
 
-        void ShowMyFlights();
+        void ShowMyFlights(int userId);
+        public bool ModifyFlight(int flightId, int classNumber, int userId);
     }
 

@@ -46,6 +46,15 @@ namespace Airport_Ticket_Booking.Models
             return _flightServices.BookFlight(flightId,_user.UserId) ? 0 : 2;
         }
 
+        public int ModifyFlightClass(int flightId, int flightClassId)
+        {
+            if (_user == null)
+            {
+                return 1;
+            }
+            
+            return _flightServices.ModifyFlight(flightId, flightClassId, _user.UserId) ? 0 : 2;
+        }
 
     }
 }

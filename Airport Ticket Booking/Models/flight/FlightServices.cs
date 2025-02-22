@@ -1,4 +1,3 @@
-using Airport_Ticket_Booking.Models.user;
 
 namespace Airport_Ticket_Booking.Models.flight;
 
@@ -6,7 +5,6 @@ public class FlightServices : IFlightServices
 {
    
     private readonly List<Flight> _flights = [];
-    private User? _user;
     private readonly IFlightSearchServices _flightSearchServices;
     private readonly IFlightRepository? _repository;
     private readonly IBookingManager _bookingManager;
@@ -17,7 +15,6 @@ public class FlightServices : IFlightServices
         _repository = FlightRepository.GetInstance(flightFilePath);
         _repository?.GetAllData(_flights);
         _bookingManager = new BookingManager();
-        _user = null;
     }
 
     public void SearchFlights(string? departureCountry = null,
@@ -28,6 +25,8 @@ public class FlightServices : IFlightServices
         var domFlight = _flightSearchServices.SearchFlights(_flights, departureCountry, destinationCountry,
             departureDate,
             departureAirport, arrivalAirport, flightClass, maxPrice);
+        _bookingManager.DisplayFlights(domFlight);
+        
     }
 
     public bool BookFlight(int flightId,int userId)
@@ -35,26 +34,39 @@ public class FlightServices : IFlightServices
         var isBooked = _bookingManager.Book(_flights, flightId, userId);
         if (isBooked)
         {
-            _repository.Update(_flights);
+            _repository?.Update(_flights);
             return true;
         }
         return false;
 
     }
 
+    public bool ModifyFlight(int flightId, int classNumber, int userId)
+    {
+        bool isModified = _bookingManager.ModifyClass(_flights, flightId, classNumber,userId);
+        if (isModified)
+        {
+            _repository?.Update(_flights);
+            return true;
+        }
+        return false;
+    }
+    
+
     public void CancelFlight(int flightId)
     {
         var isBooked = _bookingManager.Cancel(_flights, flightId);
         if (isBooked)
         {
-            _repository.Update(_flights);
+            _repository?.Update(_flights);
         }
     }
 
-    public void ShowMyFlights()
+    public void ShowMyFlights(int userId)
     {
-        var myFlights = _flights.Where(flight => flight.PassengerId == 123).ToList();
+        var myFlights = _flights.Where(flight => flight.PassengerId == userId).ToList();
         _bookingManager.DisplayFlights(myFlights);
     }
+    
     
 }
