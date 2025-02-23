@@ -47,7 +47,7 @@ public class BookingManager : IBookingManager
     {
         try
         {
-            var flight=flights.SingleOrDefault(flight => flight.FlightId == flightId && flight.IsBook && flight?.PassengerId == userId);
+            var flight=flights.SingleOrDefault(flight => flight.FlightId == flightId && flight.IsBook && flight.PassengerId == userId);
             if (flight == null)
             {
                 return false;

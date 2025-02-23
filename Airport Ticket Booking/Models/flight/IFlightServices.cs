@@ -15,5 +15,6 @@ public interface IFlightServices
     public bool ModifyFlight(int flightId, int classNumber, int userId);
 
     public List<Flight> GetAllFlights();
-    public List<string> ImportFlightsFromCsv(string filePath);
+    public List<string> ? ImportFlightsFromCsv(string filePath);
+    public void DisplayFlights(List<Flight> flights);
 }

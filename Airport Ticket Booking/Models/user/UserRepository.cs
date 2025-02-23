@@ -19,7 +19,7 @@ public class UserRepository : IUserRepository
         {
             if (_users.Count > 0) return _users;
             _users.AddRange(File.ReadAllLines(_fileString!).Select(line => line.Split(","))
-                .Select(data => new User(data[1], data[2], data[3], int.Parse(data[0]))));
+                .Select(data => new User(data[1], data[2], Enum.Parse<UserRole>(data[3]), int.Parse(data[0]))));
         }
         catch (Exception e)
         {

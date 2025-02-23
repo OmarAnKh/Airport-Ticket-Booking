@@ -4,5 +4,5 @@ public interface IUserServices
 {
     public User? SignIn(string username, string password);
     public bool SignUp(string username, string password);
-    public bool Authorize(string username, string password);
+    
 }

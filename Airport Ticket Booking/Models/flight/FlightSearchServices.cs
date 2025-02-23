@@ -8,12 +8,12 @@ public class FlightSearchServices : IFlightSearchServices
         decimal? maxPrice = null)
     {
         var searchResults = flights.Where(
-            flight => (string.IsNullOrEmpty(departureCountry) || flight.DepartureCountry == departureCountry) &&
+            flight => ( flight.DepartureCountry == departureCountry) &&
                       (string.IsNullOrEmpty(destinationCountry) || flight.DestinationCountry == destinationCountry) &&
-                      (string.IsNullOrEmpty(departureDate.ToString()) || flight.DepartureDate == departureDate) &&
-                      (string.IsNullOrEmpty(departureAirport) || flight.DepartureAirport == departureAirport) &&
-                      (string.IsNullOrEmpty(arrivalAirport) || flight.ArrivalAirport == arrivalAirport) &&
-                      (string.IsNullOrEmpty(flightClass) || (Enum.TryParse<FlightClass>(flightClass,
+                      (flight.DepartureDate == departureDate) &&
+                      (flight.DepartureAirport == departureAirport) &&
+                      (flight.ArrivalAirport == arrivalAirport) &&
+                      ((Enum.TryParse<FlightClass>(flightClass,
                               out var parsedClass) && flight.Class == parsedClass) &&
                           (!maxPrice.HasValue || flight.Price <= maxPrice) &&
                           flight.IsBook == false)).ToList();

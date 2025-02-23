@@ -3,7 +3,7 @@ namespace Airport_Ticket_Booking.Models.flight;
 public class FlightRepository : IFlightRepository
 {
     private readonly string _filePath;
-    private static readonly Lock _lock = new();
+    private readonly static Lock Lock = new Lock();
     private static FlightRepository? _instance;
 
     private FlightRepository(string filePath)
@@ -15,7 +15,7 @@ public class FlightRepository : IFlightRepository
     {
         if (_instance == null)
         {
-            lock (_lock)
+            lock (Lock)
             {
                 _instance ??= new FlightRepository(filePath);
             }
@@ -92,26 +92,26 @@ public class FlightRepository : IFlightRepository
         sw.Close();
     }
 
-    public Dictionary<string, object> ImportFlights(string importFilePath)
+    public Dictionary<string, object?> ImportFlights(string importFilePath)
     {
-        List<string> errors = new();
-        List<Flight> importedFlights = new();
+        List<string> errors = [];
+        List<Flight>? importedFlights = [];
 
         if (!File.Exists(importFilePath))
         {
+            Console.WriteLine($"Error: File '{importFilePath}' not found.");
             errors.Add($"Error: File '{importFilePath}' not found.");
-            return new Dictionary<string, object>
+            return new Dictionary<string, object?>
             {
                 { "Errors", errors },
                 { "Flights", importedFlights }
             };
         }
-
-        using StreamReader sr = new(importFilePath);
-        string? line;
+        importedFlights = [];
+        using StreamReader sr = new StreamReader(importFilePath);
         int lineNumber = 1;
 
-        while ((line = sr.ReadLine()) != null)
+        while (sr.ReadLine() is { } line)
         {
             var flightData = line.Split(',');
             int errorCounter = 0;
@@ -124,8 +124,8 @@ public class FlightRepository : IFlightRepository
                 continue;
             }
 
-            DateTime? departureDate = ValidateDate(flightData[0], lineNumber, errors, ref errorCounter);
-            decimal? price = ValidateDecimal(flightData[1], "Price", lineNumber, errors, ref errorCounter);
+            DateTime departureDate = ValidateDate(flightData[0], lineNumber, errors, ref errorCounter);
+            decimal price = ValidateDecimal(flightData[1], "Price", lineNumber, errors, ref errorCounter);
             string departureCountry =
                 ValidateString(flightData[2], "Departure Country", lineNumber, errors, ref errorCounter);
             string destinationCountry =
@@ -134,31 +134,30 @@ public class FlightRepository : IFlightRepository
                 ValidateString(flightData[4], "Departure Airport", lineNumber, errors, ref errorCounter);
             string arrivalAirport =
                 ValidateString(flightData[5], "Arrival Airport", lineNumber, errors, ref errorCounter);
-            FlightClass? @class =
+            FlightClass @class =
                 ValidateEnum<FlightClass>(flightData[6], "Flight Class", lineNumber, errors, ref errorCounter);
-            bool? isBook = ValidateBool(flightData[7], "IsBook", lineNumber, errors, ref errorCounter);
+            bool isBook = ValidateBool(flightData[7], "IsBook", lineNumber, errors, ref errorCounter);
             int? passengerId = ValidateNullableInt(flightData[8], "Passenger ID", lineNumber, errors, ref errorCounter);
-            int? flightId = ValidateInt(flightData[9], "Flight ID", lineNumber, errors, ref errorCounter);
+            int flightId = ValidateInt(flightData[9], "Flight ID", lineNumber, errors, ref errorCounter);
 
-            if (errorCounter == 0 && departureDate.HasValue && price.HasValue && @class.HasValue && isBook.HasValue &&
-                flightId.HasValue)
+            if (errorCounter == 0)
             {
-                importedFlights.Add(new Flight(departureDate.Value, price.Value, departureCountry, destinationCountry,
-                    departureAirport, arrivalAirport, @class.Value, isBook.Value, passengerId, flightId.Value)
+                importedFlights?.Add(new Flight(departureDate, price, departureCountry, destinationCountry,
+                    departureAirport, arrivalAirport, @class, isBook, passengerId, flightId)
                 {
                     DepartureCountry = departureCountry,
                     DepartureAirport = departureAirport,
                     DestinationCountry = destinationCountry,
                     ArrivalAirport = arrivalAirport,
-                    Price = price.Value,
-                    DepartureDate = departureDate.Value
+                    Price = price,
+                    DepartureDate = departureDate
                 });
             }
 
             lineNumber++;
         }
-
-        return new Dictionary<string, object>
+        Console.WriteLine("Data imported successfully.");
+        return new Dictionary<string, object?>
         {
             { "Errors", errors },
             { "Flights", importedFlights }

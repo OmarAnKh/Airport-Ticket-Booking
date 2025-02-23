@@ -30,6 +30,10 @@ public class FlightServices : IFlightServices
             departureAirport, arrivalAirport, flightClass, maxPrice);
         _bookingManager.DisplayFlights(domFlight);
     }
+    public void DisplayFlights(List<Flight> flights)
+    {
+        _bookingManager.DisplayFlights(flights);
+    }
 
     public bool BookFlight(int flightId, int userId)
     {
@@ -74,11 +78,11 @@ public class FlightServices : IFlightServices
         _bookingManager.DisplayFlights(myFlights);
     }
 
-    public List<string> ImportFlightsFromCsv(string filePath)
+    public List<string>? ImportFlightsFromCsv(string filePath)
     {
-        Dictionary<string, object> imports = _repository.ImportFlights(filePath);
-        _flights = _flights.Concat(imports["Flights"] as List<Flight>).ToList();
-        _repository.Update(_flights);
-        return imports["Errors"] as List<string>;
+        var  imports = _repository?.ImportFlights(filePath);
+        _flights = _flights.Concat((imports!["Flights"] as List<Flight>)!).ToList();
+        _repository?.Update(_flights);
+        return (List<string>?)imports!["Errors"];
     }
 }

@@ -23,8 +23,5 @@ public class UserServices : IUserServices
         
     }
 
-    public bool Authorize(string username, string password)
-    {
-        throw new NotImplementedException();
-    }
+
 }
