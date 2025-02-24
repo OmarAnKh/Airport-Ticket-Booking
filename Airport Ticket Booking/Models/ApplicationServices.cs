@@ -114,17 +114,22 @@ namespace Airport_Ticket_Booking.Models
             var bookings = _flightServices.GetAllFlights();
 
             var filteredBookings = bookings.Where(b =>
-                (b.FlightId == flightId) ||
-                (b.Price == price) ||
-                (b.DepartureCountry == departureCountry) ||
-                (b.DestinationCountry == destinationCountry) ||
-                (b.DepartureDate == departureDate) ||
-                (b.DepartureAirport == departureAirport) ||
-                (b.ArrivalAirport == arrivalAirport) ||
-                (b.PassengerId == passenger) ||
-                (b.Class == (FlightClass)flightClass)
+                CheckFilterCriteria(flightId, price, departureCountry, destinationCountry, departureDate, departureAirport, arrivalAirport, passenger, flightClass, b)
             ).ToList();
             _flightServices.DisplayFlights(filteredBookings);
+        }
+
+        private static bool CheckFilterCriteria(int? flightId, decimal? price, string? departureCountry, string? destinationCountry, DateTime? departureDate, string? departureAirport, string? arrivalAirport, int? passenger, int flightClass, Flight b)
+        {
+            return (b.FlightId == flightId) ||
+                   (b.Price == price) ||
+                   (b.DepartureCountry == departureCountry) ||
+                   (b.DestinationCountry == destinationCountry) ||
+                   (b.DepartureDate == departureDate) ||
+                   (b.DepartureAirport == departureAirport) ||
+                   (b.ArrivalAirport == arrivalAirport) ||
+                   (b.PassengerId == passenger) ||
+                   (b.Class == (FlightClass)flightClass);
         }
 
         private List<string> ? ImportFlights(string flightsCsv)
