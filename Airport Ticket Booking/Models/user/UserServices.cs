@@ -4,9 +4,9 @@ public class UserServices : IUserServices
 {
     private readonly IUserRepository _userRepository;
 
-    public UserServices(string path)
+    public UserServices(IUserRepository userRepository)
     {
-        _userRepository = new UserRepository(path);
+        _userRepository = userRepository;
     }
 
 
@@ -20,8 +20,5 @@ public class UserServices : IUserServices
     {
         User user = new User(username, password);
         return _userRepository.Create(user);
-        
     }
-
-
 }

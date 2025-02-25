@@ -2,16 +2,30 @@ namespace Airport_Ticket_Booking.Models.user;
 
 public class UserRepository : IUserRepository
 {
+    private static UserRepository? _instance;
+    private static readonly Lock Lock = new();
     private readonly string? _fileString;
     private readonly List<User> _users;
 
-    public UserRepository(string? fileString)
+    private UserRepository(string? fileString)
     {
         _fileString = fileString;
         _users = [];
         _users = GetAllData();
     }
 
+    public static UserRepository GetInstance(string? fileString)
+    {
+        if (_instance == null)
+        {
+            lock (Lock)
+            {
+                _instance ??= new UserRepository(fileString);
+            }
+        }
+
+        return _instance;
+    }
 
     public List<User> GetAllData()
     {
@@ -28,15 +42,17 @@ public class UserRepository : IUserRepository
 
         return _users;
     }
+
     public bool Create(User user)
     {
         try
         {
-            User? usernameExist=_users.SingleOrDefault(u=>u.Username==user.Username);
+            User? usernameExist = _users.SingleOrDefault(u => u.Username == user.Username);
             if (usernameExist != null)
             {
                 return false;
             }
+
             int userId = _users.Count != 0 ? _users.Max(u => u.UserId) + 1 : 1;
             string hashedPassword = HashPassword(user.Password);
             File.AppendAllText(_fileString!, $"{userId},{user.Username},{hashedPassword},{user.Role}\n");
@@ -46,6 +62,7 @@ public class UserRepository : IUserRepository
         {
             throw new Exception(e.Message);
         }
+
         return true;
     }
 
@@ -64,6 +81,7 @@ public class UserRepository : IUserRepository
         {
             throw new Exception($"Authentication error: {e.Message}");
         }
+
         return null;
     }
 

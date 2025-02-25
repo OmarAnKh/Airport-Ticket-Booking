@@ -2,17 +2,19 @@ namespace Airport_Ticket_Booking.Models.flight;
 
 public class FlightServices : IFlightServices
 {
-    private List<Flight> _flights = [];
+    private List<Flight> _flights = new();
     private readonly IFlightSearchServices _flightSearchServices;
-    private readonly IFlightRepository? _repository;
+    private readonly IFlightRepository _repository;
     private readonly IBookingManager _bookingManager;
 
-    public FlightServices(string flightFilePath)
+    public FlightServices(IFlightSearchServices flightSearchServices, IFlightRepository repository,
+        IBookingManager bookingManager)
     {
-        _flightSearchServices = new FlightSearchServices();
-        _repository = FlightRepository.GetInstance(flightFilePath);
-        _repository?.GetAllData(_flights);
-        _bookingManager = new BookingManager();
+        _flightSearchServices = flightSearchServices;
+        _repository = repository;
+        _bookingManager = bookingManager;
+
+        _repository.GetAllData(_flights);
     }
 
     public List<Flight> GetAllFlights()
@@ -30,6 +32,7 @@ public class FlightServices : IFlightServices
             departureAirport, arrivalAirport, flightClass, maxPrice);
         _bookingManager.DisplayFlights(domFlight);
     }
+
     public void DisplayFlights(List<Flight> flights)
     {
         _bookingManager.DisplayFlights(flights);
@@ -40,7 +43,7 @@ public class FlightServices : IFlightServices
         var isBooked = _bookingManager.Book(_flights, flightId, userId);
         if (isBooked)
         {
-            _repository?.Update(_flights);
+            _repository.Update(_flights);
             return true;
         }
 
@@ -52,7 +55,7 @@ public class FlightServices : IFlightServices
         bool isModified = _bookingManager.ModifyClass(_flights, flightId, classNumber, userId);
         if (isModified)
         {
-            _repository?.Update(_flights);
+            _repository.Update(_flights);
             return true;
         }
 
@@ -65,7 +68,7 @@ public class FlightServices : IFlightServices
         var isBooked = _bookingManager.Cancel(_flights, flightId);
         if (isBooked)
         {
-            _repository?.Update(_flights);
+            _repository.Update(_flights);
             return true;
         }
 
@@ -80,9 +83,9 @@ public class FlightServices : IFlightServices
 
     public List<string>? ImportFlightsFromCsv(string filePath)
     {
-        var  imports = _repository?.ImportFlights(filePath);
-        _flights = _flights.Concat((imports!["Flights"] as List<Flight>)!).ToList();
-        _repository?.Update(_flights);
-        return (List<string>?)imports!["Errors"];
+        var imports = _repository.ImportFlights(filePath);
+        _flights = _flights.Concat((imports["Flights"] as List<Flight>)!).ToList();
+        _repository.Update(_flights);
+        return (List<string>?)imports["Errors"];
     }
 }

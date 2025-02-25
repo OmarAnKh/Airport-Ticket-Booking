@@ -1,2 +1,3 @@
 1,Ahmad,$2a$11$x9JjbREYIsCA3i6Qo1Q.NeWlhLxpoj8hTRlC39lxZGDdhHq9T7l0y,Manager
 2,Omar,$2a$11$mjoNekruFP9YzfvfcnmF3uXbyytgL1FE9swtPMIwWlDAJvPQsLKle,Passenger
+3,Amjad,$2a$11$Fa9JUSs/zMCYxrW5u3PxCOpqGCzuC3xtV1JC5bubL0RDcKjsuPvnC,Passenger

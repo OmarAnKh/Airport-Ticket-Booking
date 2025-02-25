@@ -1,6 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using Airport_Ticket_Booking.Models;
+using Airport_Ticket_Booking.Models.flight;
+using Airport_Ticket_Booking.Models.user;
 
 namespace Airport_Ticket_Booking
 {
@@ -8,43 +10,56 @@ namespace Airport_Ticket_Booking
     {
         public static void Main()
         {
-           var appServices = ApplicationServices.GetInstance();
-            
+            var userRepository = UserRepository.GetInstance("../../../Data/users.txt");
+            var userServices = new UserServices(userRepository);
+            var flightRepository = FlightRepository.GetInstance("../../../Data/flight.txt");
+            var flightSearchServices = new FlightSearchServices();
+            var bookingManager = new BookingManager();
+            var flightServices = new FlightServices(flightSearchServices, flightRepository, bookingManager);
+
+            var appServices = ApplicationServices.GetInstance(flightServices, userServices);
+
             while (true)
             {
                 Console.WriteLine("Welcome to the Airport Ticket Booking System!");
                 appServices.SignInMenu();
                 Console.Write("Choose an option: ");
-                
+
                 if (!int.TryParse(Console.ReadLine(), out int option))
                 {
                     continue;
                 }
-                string? username = "";
-                string? password = "";
+
+                string? username;
+                string? password;
                 switch (option)
                 {
-                        
                     case (int)SignInMenu.SignIn:
                         Console.Write("Enter username: ");
                         username = Console.ReadLine();
                         Console.Write("Enter password: ");
-                         password = Console.ReadLine();
-                        
+                        password = Console.ReadLine();
+
                         if (appServices.SignIn(username!, password!))
                         {
                             RunUserMenu(appServices);
                         }
+
                         break;
                     case (int)SignInMenu.SignUp:
                         Console.Write("Enter username: ");
                         username = Console.ReadLine();
                         Console.Write("Enter password: ");
                         password = Console.ReadLine();
-                        if (appServices.SignIn(username!, password!))
+                        if (appServices.SignUp(username!, password!))
                         {
                             RunUserMenu(appServices);
-                        }                       
+                        }
+                        else
+                        {
+                            Console.WriteLine("Username is used.");
+                        }
+
                         break;
                     case (int)SignInMenu.Exit:
                         Console.WriteLine("Exiting... Goodbye!");
@@ -58,16 +73,14 @@ namespace Airport_Ticket_Booking
 
         static void RunUserMenu(ApplicationServices appServices)
         {
-            int menuOption=1;
-            while (menuOption!=0)
+            int menuOption = 1;
+            while (menuOption != 0)
             {
                 Console.WriteLine("\nYour Menu Options:");
                 appServices.PrintMenu();
                 Console.WriteLine("0)To exit\n1)To continue");
                 int.TryParse(Console.ReadLine(), out menuOption);
-                
             }
         }
     }
 }
-
