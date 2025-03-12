@@ -1,8 +1,10 @@
+using Airport_Ticket_Booking.Models.flight.Repositories.Interfaces;
+
 namespace Airport_Ticket_Booking.Models.flight;
 
 public class FlightServices : IFlightServices
 {
-    private List<Flight> _flights = new();
+    private List<Flight> _flights;
     private readonly IFlightSearchServices _flightSearchServices;
     private readonly IFlightRepository _repository;
     private readonly IBookingManager _bookingManager;
@@ -14,7 +16,7 @@ public class FlightServices : IFlightServices
         _repository = repository;
         _bookingManager = bookingManager;
 
-        _repository.GetAllData(_flights);
+        _flights = _repository.GetAllData();
     }
 
     public List<Flight> GetAllFlights()
@@ -31,6 +33,15 @@ public class FlightServices : IFlightServices
             departureDate,
             departureAirport, arrivalAirport, flightClass, maxPrice);
         _bookingManager.DisplayFlights(domFlight);
+    }
+
+    public void FilterFlights(int? flightId = null, decimal? price = null, string? departureCountry = null,
+        string? destinationCountry = null, DateTime? departureDate = null, string? departureAirport = null,
+        string? arrivalAirport = null, int? passenger = null, int flightClass = 0)
+    {
+        var filteredFlights = _flightSearchServices.FilterFlights(_flights, flightId, price, departureCountry,
+            destinationCountry, departureDate, departureAirport, arrivalAirport, passenger, flightClass);
+        _bookingManager.DisplayFlights(filteredFlights);
     }
 
     public void DisplayFlights(List<Flight> flights)

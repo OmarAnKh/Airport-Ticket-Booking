@@ -1,9 +1,8 @@
-namespace Airport_Ticket_Booking.Models
+namespace Airport_Ticket_Booking.Models;
+
+public enum SignInMenu
 {
-    public enum SignInMenu
-    {
-        SignIn=1,
-        SignUp,
-        Exit
-    }
+    SignIn = 1,
+    SignUp,
+    Exit
 }

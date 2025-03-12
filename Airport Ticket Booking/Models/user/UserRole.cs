@@ -1,8 +1,7 @@
-namespace Airport_Ticket_Booking.Models.user
+namespace Airport_Ticket_Booking.Models.user;
+
+public enum UserRole
 {
-    public enum UserRole
-    {
-        Passenger,
-        Manager,
-    }
+    Passenger,
+    Manager,
 }

@@ -1,4 +1,4 @@
-namespace Airport_Ticket_Booking.Models.user;
+namespace Airport_Ticket_Booking.Models.user.Repositories.Interfaces;
 
 public interface IUserRepository
 {

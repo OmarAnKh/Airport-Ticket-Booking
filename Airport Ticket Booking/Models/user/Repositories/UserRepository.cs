@@ -1,4 +1,6 @@
-namespace Airport_Ticket_Booking.Models.user;
+using Airport_Ticket_Booking.Models.user.Repositories.Interfaces;
+
+namespace Airport_Ticket_Booking.Models.user.Repositories;
 
 public class UserRepository : IUserRepository
 {

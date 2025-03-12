@@ -1,4 +1,6 @@
-namespace Airport_Ticket_Booking.Models.flight;
+using Airport_Ticket_Booking.Models.flight.Repositories.Interfaces;
+
+namespace Airport_Ticket_Booking.Models.flight.Repositories;
 
 public class FlightRepository : IFlightRepository
 {
@@ -24,8 +26,9 @@ public class FlightRepository : IFlightRepository
         return _instance;
     }
 
-    public List<Flight> GetAllData(List<Flight> flights)
+    public List<Flight> GetAllData()
     {
+        var flights = new List<Flight>();
         try
         {
             if (flights.Count > 0) return flights;
@@ -107,6 +110,7 @@ public class FlightRepository : IFlightRepository
                 { "Flights", importedFlights }
             };
         }
+
         importedFlights = [];
         using StreamReader sr = new StreamReader(importFilePath);
         int lineNumber = 1;
@@ -156,6 +160,7 @@ public class FlightRepository : IFlightRepository
 
             lineNumber++;
         }
+
         Console.WriteLine("Data imported successfully.");
         return new Dictionary<string, object?>
         {

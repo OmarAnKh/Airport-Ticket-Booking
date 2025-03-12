@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "5zDh53Ddums=",
+  "success": true,
+  "projectFilePath": "C:\\Foothill\\1.C#\\11.Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Omark\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
