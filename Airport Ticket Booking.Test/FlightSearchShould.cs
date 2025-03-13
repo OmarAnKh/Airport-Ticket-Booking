@@ -11,15 +11,15 @@ public class FlightSearchShould
 
     public FlightSearchShould()
     {
-        _fixture.Inject<DateTime>(DateTime.UtcNow.Add(new TimeSpan(10000)));
-        _fixture.Inject<int>(1000);
-        _fixture.Inject<bool>(false);
+        _fixture.Inject(DateTime.UtcNow.Add(new TimeSpan(10000)));
+        _fixture.Inject(1000);
+        _fixture.Inject(false);
 
         
     }
 
     [Fact]
-    public void Test1()
+    public void SearchFlightsCorrectly()
     {
         // Arrange
 
@@ -34,7 +34,7 @@ public class FlightSearchShould
         var destinationCountry = flights.First().DestinationCountry;
 
         // Act
-        var result = _flightSearchService.SearchFlights(flights, departureCountry, destinationCountry, departureDate);
+        var result = _flightSearchService.SearchFlights(flights:flights,departureDate:departureDate ,departureCountry:departureCountry,destinationCountry:destinationCountry);
 
         // Assert
         Assert.NotEmpty(result);

@@ -9,8 +9,8 @@ public class FlightSearchService : IFlightSearchService
         string? departureAirport = null, string? arrivalAirport = null, string? flightClass = null,
         decimal? maxPrice = null)
     {
-        var searchResults = flights.Where(
-            flight => CheckSearchCriteria(departureCountry, destinationCountry, departureDate, departureAirport,
+        var searchResults = flights.Where(flight =>
+            CheckSearchCriteria(departureCountry, destinationCountry, departureDate, departureAirport,
                 arrivalAirport, flightClass, maxPrice, flight)).ToList();
         return searchResults;
     }
@@ -19,14 +19,14 @@ public class FlightSearchService : IFlightSearchService
         DateTime? departureDate, string? departureAirport, string? arrivalAirport, string? flightClass,
         decimal? maxPrice, Flight flight)
     {
-        return (flight.DepartureCountry == departureCountry) ||
-               (string.IsNullOrEmpty(destinationCountry) || flight.DestinationCountry == destinationCountry) ||
-               (flight.DepartureDate == departureDate) ||
-               (flight.DepartureAirport == departureAirport) ||
-               (flight.ArrivalAirport == arrivalAirport) ||
-               ((Enum.TryParse<FlightClass>(flightClass,
-                    out var parsedClass) && flight.Class == parsedClass) ||
-                (!maxPrice.HasValue || flight.Price <= maxPrice) ||
-                flight.IsBook == false);
+        return ((string.IsNullOrEmpty(departureCountry) || flight.DepartureCountry == departureCountry) &&
+                (string.IsNullOrEmpty(destinationCountry) || flight.DestinationCountry == destinationCountry) &&
+                (!departureDate.HasValue || flight.DepartureDate.Date == departureDate.Value.Date) &&
+                (string.IsNullOrEmpty(departureAirport) || flight.DepartureAirport == departureAirport) &&
+                (string.IsNullOrEmpty(arrivalAirport) || flight.ArrivalAirport == arrivalAirport) &&
+                (string.IsNullOrEmpty(flightClass) || 
+                 (Enum.TryParse<FlightClass>(flightClass, out var parsedClass) && flight.Class == parsedClass)) &&
+                (!maxPrice.HasValue || flight.Price <= maxPrice) &&
+                !flight.IsBook);
     }
 }

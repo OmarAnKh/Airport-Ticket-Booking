@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Foothill\\1.C#\\11.Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking.csproj": {}
+    "D:\\VS-20230610T091643Z-001\\VS\\course\\foothill\\C#\\Airport-Ticket-Booking\\Airport Ticket Booking\\Airport Ticket Booking.csproj": {}
   },
   "projects": {
-    "C:\\Foothill\\1.C#\\11.Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking.csproj": {
+    "D:\\VS-20230610T091643Z-001\\VS\\course\\foothill\\C#\\Airport-Ticket-Booking\\Airport Ticket Booking\\Airport Ticket Booking.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Foothill\\1.C#\\11.Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking.csproj",
+        "projectUniqueName": "D:\\VS-20230610T091643Z-001\\VS\\course\\foothill\\C#\\Airport-Ticket-Booking\\Airport Ticket Booking\\Airport Ticket Booking.csproj",
         "projectName": "Airport Ticket Booking",
-        "projectPath": "C:\\Foothill\\1.C#\\11.Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking.csproj",
+        "projectPath": "D:\\VS-20230610T091643Z-001\\VS\\course\\foothill\\C#\\Airport-Ticket-Booking\\Airport Ticket Booking\\Airport Ticket Booking.csproj",
         "packagesPath": "C:\\Users\\Omark\\.nuget\\packages\\",
-        "outputPath": "C:\\Foothill\\1.C#\\11.Airport Ticket Booking\\Airport Ticket Booking\\Airport Ticket Booking\\obj\\",
+        "outputPath": "D:\\VS-20230610T091643Z-001\\VS\\course\\foothill\\C#\\Airport-Ticket-Booking\\Airport Ticket Booking\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\Omark\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -42,7 +38,7 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "direct"
+          "auditMode": "all"
         },
         "SdkAnalysisLevel": "9.0.100"
       },
@@ -71,7 +67,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Users\\Omark\\.dotnet\\sdk\\9.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
