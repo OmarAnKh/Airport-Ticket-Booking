@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using Airport_Ticket_Booking.Models.flight.Attribute;
+
 namespace Airport_Ticket_Booking.Models.flight;
 
 public class Flight
@@ -19,8 +22,10 @@ public class Flight
     }
 
     public int FlightId { get; init; }
-    private decimal _price;
-    private DateTime _departureDate;
+    [Range(0, (double)decimal.MaxValue, ErrorMessage = "Price cannot be negative")]
+    public decimal Price{get;set;}
+    [FutureDate(ErrorMessage = "Departure date must be today or in the future.")]
+    public DateTime DepartureDate { get; init; }
     public bool IsBook { get; set; }
 
 
@@ -31,35 +36,8 @@ public class Flight
     public int? PassengerId { get; set; }
     public FlightClass Class { get; set; }
 
-    public required decimal Price
-    {
-        get => _price;
-        set
-        {
-            if (value < 0)
-            {
-                throw new ArgumentException("Price cannot be negative");
-            }
-
-            _price = value;
-        }
-    }
-
-    public required DateTime DepartureDate
-    {
-        get => _departureDate;
-        set
-        {
-            if (value >= DateTime.Now.Date)
-            {
-                _departureDate = value;
-            }
-            else
-            {
-                throw new ArgumentException("Departure date must be today or in the future.");
-            }
-        }
-    }
+    
+    
 
     public bool Equals(Flight? obj)
     {

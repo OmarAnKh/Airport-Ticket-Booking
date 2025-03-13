@@ -19,7 +19,8 @@ public class BookingManager : IBookingManager
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            Console.WriteLine(ex.Message);
+            return false;
         }
     }
 
@@ -39,7 +40,8 @@ public class BookingManager : IBookingManager
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            Console.WriteLine(ex.Message);
+            throw;
         }
     }
 
@@ -60,9 +62,9 @@ public class BookingManager : IBookingManager
             flight.Class = (FlightClass)classNumber;
             return true;
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(ex.Message);
             throw;
         }
     }

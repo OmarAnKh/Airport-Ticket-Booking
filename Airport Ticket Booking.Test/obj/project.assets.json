@@ -87,6 +87,19 @@
           }
         }
       },
+      "FluentAssertions/8.1.1": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/FluentAssertions.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/FluentAssertions.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
       "Microsoft.CodeCoverage/17.12.0": {
         "type": "package",
         "compile": {
@@ -2045,6 +2058,31 @@
         "lib/net35/Fare.xml",
         "lib/netstandard1.1/Fare.dll",
         "lib/netstandard1.1/Fare.xml"
+      ]
+    },
+    "FluentAssertions/8.1.1": {
+      "sha512": "tzrZ95x7TWY4panvAhVoHg5zIhg4768Cx+8ZPoKR2sDPu2oCvVeg3ts0TTL0aJlIfZ1NGxCtBP5s555AgXJozg==",
+      "type": "package",
+      "path": "fluentassertions/8.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "FluentAssertions.png",
+        "LICENSE",
+        "fluentassertions.8.1.1.nupkg.sha512",
+        "fluentassertions.nuspec",
+        "lib/net47/FluentAssertions.dll",
+        "lib/net47/FluentAssertions.pdb",
+        "lib/net47/FluentAssertions.xml",
+        "lib/net6.0/FluentAssertions.dll",
+        "lib/net6.0/FluentAssertions.pdb",
+        "lib/net6.0/FluentAssertions.xml",
+        "lib/netstandard2.0/FluentAssertions.dll",
+        "lib/netstandard2.0/FluentAssertions.pdb",
+        "lib/netstandard2.0/FluentAssertions.xml",
+        "lib/netstandard2.1/FluentAssertions.dll",
+        "lib/netstandard2.1/FluentAssertions.pdb",
+        "lib/netstandard2.1/FluentAssertions.xml"
       ]
     },
     "Microsoft.CodeCoverage/17.12.0": {
@@ -5961,6 +5999,7 @@
       "Airport Ticket Booking >= 1.0.0",
       "AutoFixture >= 4.18.1",
       "AutoFixture.Xunit2 >= 4.18.1",
+      "FluentAssertions >= 8.1.1",
       "Microsoft.NET.Test.Sdk >= 17.12.0",
       "Moq >= 4.20.72",
       "coverlet.collector >= 6.0.2",
@@ -6024,6 +6063,10 @@
           "AutoFixture.Xunit2": {
             "target": "Package",
             "version": "[4.18.1, )"
+          },
+          "FluentAssertions": {
+            "target": "Package",
+            "version": "[8.1.1, )"
           },
           "Microsoft.NET.Test.Sdk": {
             "target": "Package",

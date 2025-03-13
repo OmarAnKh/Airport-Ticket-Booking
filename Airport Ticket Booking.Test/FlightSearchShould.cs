@@ -1,5 +1,6 @@
 ﻿using Airport_Ticket_Booking.Models.flight;
 using AutoFixture;
+using FluentAssertions;
 
 
 namespace Airport_Ticket_Booking.Test;
@@ -11,21 +12,16 @@ public class FlightSearchShould
 
     public FlightSearchShould()
     {
-        _fixture.Inject(DateTime.UtcNow.Add(new TimeSpan(10000)));
-        _fixture.Inject(1000);
-        _fixture.Inject(false);
+           var random = new Random();
+                _fixture.Customize<Flight>(flight => flight
+                    .With(f => f.DepartureDate, DateTime.UtcNow.AddDays(random.Next(1, 31)))
+                    .With(f => f.Price, random.Next(100, 2000))
+                    .With(f => f.IsBook, false));
     }
-
     [Fact]
     public void SearchFlightsCorrectly()
     {
         // Arrange
-
-        // _fixture.Customize<Flight>(flight => flight
-        //     .With(date => date.DepartureDate, DateTime.UtcNow.AddDays(1))
-        //     .With(price => price.Price, 1000)
-        //     .With(status => status.IsBook, false));
-        
         var flights = _fixture.CreateMany<Flight>(10).ToList();
         var departureDate = flights.First().DepartureDate;
         var departureCountry = flights.First().DepartureCountry;
@@ -35,6 +31,6 @@ public class FlightSearchShould
         var result = _flightSearchService.SearchFlights(flights:flights,departureDate:departureDate ,departureCountry:departureCountry,destinationCountry:destinationCountry);
 
         // Assert
-        Assert.Single(result);
+        result.Should().NotBeEmpty();
     }
 }

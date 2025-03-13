@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "hc2Q2GOtqx4=",
+  "dgSpecHash": "TVO6j94SFg0=",
   "success": true,
   "projectFilePath": "D:\\VS-20230610T091643Z-001\\VS\\course\\foothill\\C#\\Airport-Ticket-Booking\\Airport Ticket Booking.Test\\Airport Ticket Booking.Test.csproj",
   "expectedPackageFiles": [
@@ -10,6 +10,7 @@
     "C:\\Users\\Omark\\.nuget\\packages\\castle.core\\5.1.1\\castle.core.5.1.1.nupkg.sha512",
     "C:\\Users\\Omark\\.nuget\\packages\\coverlet.collector\\6.0.2\\coverlet.collector.6.0.2.nupkg.sha512",
     "C:\\Users\\Omark\\.nuget\\packages\\fare\\2.1.1\\fare.2.1.1.nupkg.sha512",
+    "C:\\Users\\Omark\\.nuget\\packages\\fluentassertions\\8.1.1\\fluentassertions.8.1.1.nupkg.sha512",
     "C:\\Users\\Omark\\.nuget\\packages\\microsoft.codecoverage\\17.12.0\\microsoft.codecoverage.17.12.0.nupkg.sha512",
     "C:\\Users\\Omark\\.nuget\\packages\\microsoft.net.test.sdk\\17.12.0\\microsoft.net.test.sdk.17.12.0.nupkg.sha512",
     "C:\\Users\\Omark\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
