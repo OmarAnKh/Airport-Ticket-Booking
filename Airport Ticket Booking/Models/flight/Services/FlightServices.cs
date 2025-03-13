@@ -5,16 +5,18 @@ namespace Airport_Ticket_Booking.Models.flight;
 public class FlightServices : IFlightServices
 {
     private List<Flight> _flights;
-    private readonly IFlightSearchServices _flightSearchServices;
+    private readonly IFlightSearchService _flightSearchService;
+    private readonly IFlightFilterService _flightFilterService;
     private readonly IFlightRepository _repository;
     private readonly IBookingManager _bookingManager;
 
-    public FlightServices(IFlightSearchServices flightSearchServices, IFlightRepository repository,
-        IBookingManager bookingManager)
+    public FlightServices(IFlightSearchService flightSearchService, IFlightRepository repository,
+        IBookingManager bookingManager, IFlightFilterService flightFilterService)
     {
-        _flightSearchServices = flightSearchServices;
+        _flightSearchService = flightSearchService;
         _repository = repository;
         _bookingManager = bookingManager;
+        _flightFilterService = flightFilterService;
 
         _flights = _repository.GetAllData();
     }
@@ -29,7 +31,7 @@ public class FlightServices : IFlightServices
         string? departureAirport = null, string? arrivalAirport = null, string? flightClass = null,
         decimal? maxPrice = null)
     {
-        var domFlight = _flightSearchServices.SearchFlights(_flights, departureCountry, destinationCountry,
+        var domFlight = _flightSearchService.SearchFlights(_flights, departureCountry, destinationCountry,
             departureDate,
             departureAirport, arrivalAirport, flightClass, maxPrice);
         _bookingManager.DisplayFlights(domFlight);
@@ -39,7 +41,7 @@ public class FlightServices : IFlightServices
         string? destinationCountry = null, DateTime? departureDate = null, string? departureAirport = null,
         string? arrivalAirport = null, int? passenger = null, int flightClass = 0)
     {
-        var filteredFlights = _flightSearchServices.FilterFlights(_flights, flightId, price, departureCountry,
+        var filteredFlights = _flightFilterService.FilterFlights(_flights, flightId, price, departureCountry,
             destinationCountry, departureDate, departureAirport, arrivalAirport, passenger, flightClass);
         _bookingManager.DisplayFlights(filteredFlights);
     }

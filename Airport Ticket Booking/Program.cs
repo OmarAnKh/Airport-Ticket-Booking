@@ -15,9 +15,11 @@ static class Program
         var userRepository = UserRepository.GetInstance("../../../Data/users.txt");
         var userServices = new UserServices(userRepository);
         var flightRepository = FlightRepository.GetInstance("../../../Data/flight.txt");
-        var flightSearchServices = new FlightSearchServices();
+        var flightSearchServices = new FlightSearchService();
+        var flightFilterService = new FlightFilterService();
         var bookingManager = new BookingManager();
-        var flightServices = new FlightServices(flightSearchServices, flightRepository, bookingManager);
+        var flightServices =
+            new FlightServices(flightSearchServices, flightRepository, bookingManager, flightFilterService);
 
         var appServices = ApplicationServices.GetInstance(flightServices, userServices);
 
