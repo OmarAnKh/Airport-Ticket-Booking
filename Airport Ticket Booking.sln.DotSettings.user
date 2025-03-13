@@ -48,5 +48,8 @@
     &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.ModifyClass_ShouldReturnTrue_WhenClassChanges&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.Cancel_ShouldReturnFalse_WhenFlightIsNotBooked&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.CancelShouldReturnTrueWhenFlightIsBooked&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightClassShould.CalculateFlightPrice_ShouldReturnExpectedPrice&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightClassShould.CalculateFlightPrice_ShouldThrowInvalidOperationException_WhenClassTransitionIsUnsupported&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightClassShould.CalculateFlightPriceShouldReturnExpectedPrice&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
