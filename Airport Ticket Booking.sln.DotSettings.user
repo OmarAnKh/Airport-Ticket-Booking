@@ -27,6 +27,7 @@
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=56382e3f_002Dcebc_002D4275_002D914c_002D5c793b506c42/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightSearchShould.SearchFlightsWithoutData&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightFilterShould.FilterFlightsCorrectly&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightSearchShould.SearchFlightsCorrectly&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
