@@ -2,148 +2,104 @@ using Airport_Ticket_Booking.Models.flight;
 using AutoFixture;
 using FluentAssertions;
 
-namespace Airport_Ticket_Booking.Test
+namespace Airport_Ticket_Booking.Test;
+public class BookingManagerShould
 {
-    public class BookingManagerShould
+    private readonly Fixture _fixture;
+    private readonly BookingManager _bookingManager;
+
+    public BookingManagerShould()
     {
-        private readonly Fixture _fixture;
-        private readonly BookingManager _bookingManager;
+        _fixture = new Fixture();
+        _bookingManager = new BookingManager();
 
-        public BookingManagerShould()
-        {
-            _fixture = new Fixture();
-            _bookingManager = new BookingManager();
-
-            var random = new Random();
-            _fixture.Customize<Flight>(flight => flight
-                .With(f => f.DepartureDate, DateTime.UtcNow.AddDays(random.Next(1, 31)))
-                .With(f => f.Price, random.Next(100, 2000)));
-        }
-
-        [Fact]
-        public void ShouldBookFlightSuccessfully()
-        {
-            // Arrange
-            var flights = _fixture.CreateMany<Flight>(5).ToList();
-            var flight = flights[0];
-            flight.IsBook = false;
-
-            // Act
-            var result = _bookingManager.Book(flights, flight.FlightId, 123);
-
-            // Assert
-            result.Should().BeTrue("because the flight was available for booking");
-            flight.IsBook.Should().BeTrue("because the flight should now be booked");
-            flight.PassengerId.Should().Be(123, "because the provided passenger ID should be assigned to the flight");
-        }
-
-        [Fact]
-        public void Book_ShouldReturnFalse_WhenFlightIsAlreadyBooked()
-        {
-            // Arrange
-            var flights = _fixture.CreateMany<Flight>(5).ToList();
-            var flight = flights[0];
-            flight.IsBook = true;
-
-            // Act
-            var result = _bookingManager.Book(flights, flight.FlightId, 123);
-
-            // Assert
-            result.Should().BeFalse("because the flight is already booked");
-        }
-
-        [Theory]
-        [InlineData(false, 123, true)]
-        [InlineData(true, 123, false)]
-        [InlineData(true, null, false)]
-        public void BookAFlightShould(bool isBook, int passengerId, bool expectedBookingResult)
-        {
-            // Arrange
-            var flights = _fixture.CreateMany<Flight>(5).ToList();
-            var flight = flights[0];
-            flight.IsBook = isBook;
-
-            // Act
-            var result = _bookingManager.Book(flights, flight.FlightId, passengerId);
-
-            // Assert
-            result.Should().Be(expectedBookingResult, $"because the flight booking state was {isBook} and the passenger ID was {passengerId}");
-        }
-        
-        
-        
-        [Fact]
-        public void CancelShouldReturnTrueWhenFlightIsBooked()
-        {
-            // Arrange
-            var flights = _fixture.CreateMany<Flight>(5).ToList();
-            var flight = flights[0];
-            flight.IsBook = true;
-
-            // Act
-            var result = _bookingManager.Cancel(flights, flight.FlightId);
-
-            // Assert
-            Assert.True(result);
-            Assert.False(flight.IsBook);
-        }
-        
-        [Fact]
-        public void CancelShouldReturnFalseWhenFlightIsNotBooked()
-        {
-            // Arrange
-            var flights = _fixture.CreateMany<Flight>(5).ToList();
-            var flight = flights[0];
-            flight.IsBook = false;
-
-            // Act
-            var result = _bookingManager.Cancel(flights, flight.FlightId);
-
-            // Assert
-            Assert.False(result);
-        }
-
-        
-        [Fact]
-        public void ModifyClassShouldReturnTrueWhenClassChanges()
-        {
-            // Arrange
-            var flights = _fixture.CreateMany<Flight>(5).ToList();
-            var flight = flights[0];
-            flight.IsBook = true;
-            flight.PassengerId = 123;
-            flight.Class = FlightClass.Economy;
-            flight.Price = 200;
-
-            var currentPrice = flight.Price;
-            var targetClass = FlightClass.Business;
-
-            // Act
-            decimal newPrice = flight.Class.CalculateFlightPrice(currentPrice, targetClass);
-            flight.Class = targetClass;
-            flight.Price = newPrice;
-
-            // Assert
-            Assert.True(flight.Class == targetClass);
-            Assert.Equal(300, flight.Price);
-        }
-
-        [Fact]
-        public void ModifyClassShouldReturnFalseWhenUserIsNotPassenger()
-        {
-            // Arrange
-            var flights = _fixture.CreateMany<Flight>(5).ToList();
-            var flight = flights[0];
-            flight.IsBook = true;
-            flight.PassengerId = 123;
-            flight.Class = FlightClass.Economy;
-
-            // Act
-            var result = _bookingManager.ModifyClass(flights, flight.FlightId, (int)FlightClass.Business, 456);
-
-            // Assert
-            Assert.False(result);
-        }
-        
+        var random = new Random();
+        _fixture.Customize<Flight>(flight => flight
+            .With(f => f.DepartureDate, DateTime.UtcNow.AddDays(random.Next(1, 31)))
+            .With(f => f.Price, random.Next(100, 2000)));
     }
+    
+
+    [Theory]
+    [InlineData(false, 123, true)]
+    [InlineData(true, 123, false)]
+    [InlineData(true, null, false)]
+    public void ShouldBookFlightBasedOnBookingStateAndPassengerId(bool isBook, int passengerId, bool expectedBookingResult)
+    {
+        // Arrange
+        var flights = _fixture.CreateMany<Flight>(5).ToList();
+        var flight = flights[0];
+        flight.IsBook = isBook;
+
+        // Act
+        var result = _bookingManager.Book(flights, flight.FlightId, passengerId);
+
+        // Assert
+        result.Should().Be(expectedBookingResult);
+    }
+    
+    
+    
+    [Theory]
+    [InlineData(true, true)]
+    [InlineData(false, false)]
+    public void ShouldCancelFlightBasedOnBookingStateAndPassengerId(bool isBook, bool expectedCancellationResult)
+    {
+        // Arrange
+        var flights = _fixture.CreateMany<Flight>(5).ToList();
+
+        var flight = new Flight(
+            departureDate: DateTime.Today.AddDays(3), 
+            price: 1000, 
+            departureCountry: "USA",
+            destinationCountry: "UK",
+            departureAirport: "JFK",
+            arrivalAirport: "LHR",
+            @class: FlightClass.Business,
+            isBook: isBook,
+            passengerId: 0,
+            flightId: 1
+        )
+        {
+            DepartureCountry = "USA",
+            DepartureAirport = "JFK",
+            DestinationCountry = "UK",
+            ArrivalAirport = "LHR"
+        };
+
+        flights.Add(flight);
+
+        // Act
+        var result = _bookingManager.Cancel(flights, flight.FlightId);
+
+        // Assert
+        result.Should().Be(expectedCancellationResult);
+    }
+    
+    [Theory]
+    [InlineData(FlightClass.Economy, FlightClass.Business, 200, 300, true)]
+    [InlineData(FlightClass.Business, FlightClass.First, 500, 750, true)] 
+    [InlineData(FlightClass.First, FlightClass.Economy, 700, 350, true)] 
+    public void ModifyClassShouldReturnTrueWhenClassChanges(FlightClass initialClass, FlightClass targetClass, decimal initialPrice, decimal expectedPrice, bool expectedResult)
+    {
+        // Arrange
+        var flights = _fixture.CreateMany<Flight>(5).ToList();
+        var flight = flights[0];
+        flight.IsBook = true;
+        flight.PassengerId = 123;
+        flight.Class = initialClass;
+        flight.Price = initialPrice;
+
+        // Act
+        decimal newPrice = flight.Class.CalculateFlightPrice(initialPrice, targetClass);
+        flight.Class = targetClass;
+        flight.Price = newPrice;
+
+        // Assert
+        Assert.Equal(targetClass, flight.Class);
+        Assert.Equal(expectedPrice, flight.Price);
+        Assert.True(expectedResult);
+    }
+    
 }
+

@@ -41,7 +41,7 @@ public class BookingManager : IBookingManager
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
-            throw;
+            return false;
         }
     }
 
