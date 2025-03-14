@@ -1,22 +1,20 @@
 using Airport_Ticket_Booking.Models.user.Repositories.Interfaces;
 
-namespace Airport_Ticket_Booking.Models.user.Repositories;
-
+namespace Airport_Ticket_Booking.Models.user.Repositories; 
 public class UserRepository : IUserRepository
 {
     private static UserRepository? _instance;
-    private static readonly Lock Lock = new();
+    private readonly static object Lock = new();
     private readonly string? _fileString;
     private readonly List<User> _users;
-
-    private UserRepository(string? fileString)
+    
+    private UserRepository(string fileString)
     {
         _fileString = fileString;
-        _users = [];
-        _users = GetAllData();
+        _users = new List<User>();
     }
 
-    public static UserRepository GetInstance(string? fileString)
+    public static UserRepository GetInstance(string fileString)
     {
         if (_instance == null)
         {
@@ -25,7 +23,6 @@ public class UserRepository : IUserRepository
                 _instance ??= new UserRepository(fileString);
             }
         }
-
         return _instance;
     }
 
@@ -54,46 +51,15 @@ public class UserRepository : IUserRepository
             {
                 return false;
             }
-
-            int userId = _users.Count != 0 ? _users.Max(u => u.UserId) + 1 : 1;
-            string hashedPassword = HashPassword(user.Password);
-            File.AppendAllText(_fileString!, $"{userId},{user.Username},{hashedPassword},{user.Role}\n");
-            _users.Add(new User(user.Username, hashedPassword, user.Role, userId));
+            File.AppendAllText(_fileString!, $"{user.UserId},{user.Username},{user.Password},{user.Role}\n");
+            _users.Add(user);
         }
         catch (Exception e)
         {
             throw new Exception(e.Message);
         }
-
         return true;
     }
 
-    public User? Authentication(User user)
-    {
-        try
-        {
-            var exist = _users.SingleOrDefault(data => data.Username == user.Username);
-            if (exist == null) return null;
-            if (VerifyPassword(user.Password, exist.Password))
-            {
-                return exist;
-            }
-        }
-        catch (Exception e)
-        {
-            throw new Exception($"Authentication error: {e.Message}");
-        }
-
-        return null;
-    }
-
-    private static string HashPassword(string password)
-    {
-        return BCrypt.Net.BCrypt.HashPassword(password);
-    }
-
-    private bool VerifyPassword(string password, string hashedPassword)
-    {
-        return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
-    }
+    public User? Authentication(string username) => _users.SingleOrDefault(u => u.Username == username);
 }

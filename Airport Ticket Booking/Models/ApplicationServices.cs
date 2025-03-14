@@ -8,23 +8,23 @@ namespace Airport_Ticket_Booking.Models;
 public class ApplicationServices
 {
     private readonly IFlightServices _flightServices;
-    private readonly IUserServices _userServices;
+    private readonly IUserService _userService;
     private User? _user;
 
-    private static readonly Lock Lock = new();
+    private readonly static Lock Lock = new();
     private static ApplicationServices? _instance;
 
-    private ApplicationServices(IFlightServices flightServices, IUserServices userServices)
+    private ApplicationServices(IFlightServices flightServices, IUserService userService)
     {
         _flightServices = flightServices;
-        _userServices = userServices;
+        _userService = userService;
     }
 
-    public static ApplicationServices GetInstance(IFlightServices flightServices, IUserServices userServices)
+    public static ApplicationServices GetInstance(IFlightServices flightServices, IUserService userService)
     {
         lock (Lock)
         {
-            _instance ??= new ApplicationServices(flightServices, userServices);
+            _instance ??= new ApplicationServices(flightServices, userService);
         }
 
         return _instance;
@@ -32,7 +32,7 @@ public class ApplicationServices
 
     public int SignIn(string username, string password)
     {
-        User? user = _userServices.SignIn(username, password);
+        User? user = _userService.AuthenticateUser(username, password);
         if (user != null)
         {
             _user = user;
@@ -45,7 +45,12 @@ public class ApplicationServices
 
     public bool SignUp(string username, string password)
     {
-        return _userServices.SignUp(username, password);
+        if (_userService.RegisterUser(username, password))
+        {
+            SignIn(username, password);
+            return true;
+        }
+        return false;
     }
 
     private int Book(int flightId)

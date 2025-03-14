@@ -13,7 +13,7 @@ static class Program
     public static void Main()
     {
         var userRepository = UserRepository.GetInstance("../../../Data/users.txt");
-        var userServices = new UserServices(userRepository);
+        var userServices = new UserService(userRepository);
         var flightRepository = FlightRepository.GetInstance("../../../Data/flight.txt");
         var flightSearchServices = new FlightSearchService();
         var flightFilterService = new FlightFilterService();
