@@ -1,6 +1,6 @@
 using Airport_Ticket_Booking.Models.flight.Repositories.Interfaces;
 
-namespace Airport_Ticket_Booking.Models.flight;
+namespace Airport_Ticket_Booking.Models.flight.Services;
 
 public class FlightServices : IFlightServices
 {

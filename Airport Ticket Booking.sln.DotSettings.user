@@ -71,5 +71,6 @@
     &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:FlightClassShould.cs&lt;/ProjectFile&gt;&#xD;
     &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:FlightFilterShould.cs&lt;/ProjectFile&gt;&#xD;
     &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:FlightSearchShould.cs&lt;/ProjectFile&gt;&#xD;
+    &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:UserServiceShould.cs&lt;/ProjectFile&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

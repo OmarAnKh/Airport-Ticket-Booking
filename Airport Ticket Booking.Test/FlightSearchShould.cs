@@ -1,4 +1,5 @@
 ﻿using Airport_Ticket_Booking.Models.flight;
+using Airport_Ticket_Booking.Models.flight.Services;
 using AutoFixture;
 using FluentAssertions;
 

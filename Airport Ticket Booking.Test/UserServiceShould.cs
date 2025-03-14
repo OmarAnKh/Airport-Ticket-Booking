@@ -1,7 +1,6 @@
 using Airport_Ticket_Booking.Models.user;
 using Airport_Ticket_Booking.Models.user.Repositories.Interfaces;
 using Airport_Ticket_Booking.Models.user.Services;
-using AutoFixture;
 using Moq;
 
 namespace Airport_Ticket_Booking.Test
