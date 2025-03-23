@@ -2,7 +2,7 @@ namespace Airport_Ticket_Booking.Models;
 
 public enum ReturnValues
 {
-    Succeed,
-    NotAuthenticated,
-    Failure
+    Succeed=0,
+    NotAuthenticated=1,
+    Failure=2,
 }

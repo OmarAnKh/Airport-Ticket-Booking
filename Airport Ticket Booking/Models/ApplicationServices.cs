@@ -1,5 +1,8 @@
 using System.Globalization;
 using Airport_Ticket_Booking.Models.flight;
+using Airport_Ticket_Booking.Models.flight.Services;
+using Airport_Ticket_Booking.Models.flight.Services.interfaces;
+using Airport_Ticket_Booking.Models.UI;
 using Airport_Ticket_Booking.Models.user;
 using Airport_Ticket_Booking.Models.user.Repositories.Interfaces;
 
@@ -7,40 +10,54 @@ namespace Airport_Ticket_Booking.Models;
 
 public class ApplicationServices
 {
-    private readonly IFlightServices _flightServices;
+   private readonly IFlightService _flightService;
     private readonly IUserService _userService;
-    private User? _user;
+    private readonly IUiService _uiService;
+    private User? _userBackingField;
 
-    private readonly static Lock Lock = new();
-    private static ApplicationServices? _instance;
-
-    private ApplicationServices(IFlightServices flightServices, IUserService userService)
+    public User User
     {
-        _flightServices = flightServices;
-        _userService = userService;
+        get
+        {
+            if (_userBackingField == null)
+            {
+                throw new InvalidOperationException("User is not authenticated.");
+            }
+            return _userBackingField;
+        }
     }
 
-    public static ApplicationServices GetInstance(IFlightServices flightServices, IUserService userService)
+    private static readonly Lock Lock = new();
+    private static ApplicationServices? _instance;
+
+    private ApplicationServices(IFlightService flightService, IUserService userService, IUiService uiService)
+    {
+        _flightService = flightService;
+        _userService = userService;
+        _uiService = uiService;
+    }
+
+    public static ApplicationServices GetInstance(IFlightService flightService, IUserService userService, IUiService uiService)
     {
         lock (Lock)
         {
-            _instance ??= new ApplicationServices(flightServices, userService);
+            _instance ??= new ApplicationServices(flightService, userService, uiService);
         }
 
         return _instance;
     }
 
-    public int SignIn(string username, string password)
+    public ReturnValues SignIn(string username, string password)
     {
-        User? user = _userService.AuthenticateUser(username, password);
+        var user = _userService.AuthenticateUser(username, password);
         if (user != null)
         {
-            _user = user;
-            return (int)ReturnValues.Succeed;
+            _userBackingField = user;
+            return ReturnValues.Succeed;
         }
 
         Console.WriteLine("Invalid username or password.");
-        return (int)ReturnValues.Failure;
+        return ReturnValues.Failure;
     }
 
     public bool SignUp(string username, string password)
@@ -53,163 +70,146 @@ public class ApplicationServices
         return false;
     }
 
-    private int Book(int flightId)
+    private ReturnValues Book(int flightId)
     {
-        if (_user == null)
+        try
         {
-            return (int)ReturnValues.NotAuthenticated;
+            var user = User; 
+            return _flightService.BookFlight(flightId, user.UserId)
+                ? ReturnValues.Succeed
+                : ReturnValues.Failure;
         }
-
-        return _flightServices.BookFlight(flightId, _user.UserId)
-            ? (int)ReturnValues.Succeed
-            : (int)ReturnValues.Failure;
+        catch (InvalidOperationException)
+        {
+            return ReturnValues.NotAuthenticated;
+        }
     }
 
-    private int ModifyFlightClass(int flightId, int flightClassId)
+    private ReturnValues ModifyFlightClass(int flightId, int flightClassId)
     {
-        if (_user == null)
+        try
         {
-            return (int)ReturnValues.NotAuthenticated;
+            var user = User; 
+            return _flightService.ModifyFlight(flightId, flightClassId, user.UserId)
+                ? ReturnValues.Succeed
+                : ReturnValues.Failure;
         }
-
-        return _flightServices.ModifyFlight(flightId, flightClassId, _user.UserId)
-            ? (int)ReturnValues.Succeed
-            : (int)ReturnValues.Failure;
+        catch (InvalidOperationException)
+        {
+            return ReturnValues.NotAuthenticated;
+        }
     }
 
-    private int Cancel(int flightId)
+    private ReturnValues Cancel(int flightId)
     {
-        if (_user == null)
+        try
         {
-            return (int)ReturnValues.NotAuthenticated;
+            return _flightService.CancelFlight(flightId)
+                ? ReturnValues.Succeed
+                : ReturnValues.Failure;
         }
-
-        return _flightServices.CancelFlight(flightId)
-            ? (int)ReturnValues.Succeed
-            : (int)ReturnValues.Failure;
+        catch (InvalidOperationException)
+        {
+            return ReturnValues.NotAuthenticated;
+        }
     }
 
-    private void SearchFlights(string? departureCountry = null,
-        string? destinationCountry = null, DateTime? departureDate = null,
-        string? departureAirport = null, string? arrivalAirport = null, string? flightClass = null,
-        decimal? maxPrice = null)
+    private List<Flight> SearchFlights(FlightSearchCriteria searchCriteria)
     {
-        _flightServices.SearchFlights(departureCountry, destinationCountry,
-            departureDate, departureAirport, arrivalAirport, flightClass, maxPrice);
+       return _flightService.SearchFlights(searchCriteria);
     }
 
-    private int ShowMyFlights()
+    private ReturnValues ShowMyFlights()
     {
-        if (_user == null)
+        try
         {
-            return (int)ReturnValues.NotAuthenticated;
+            var user = User; 
+            return  _flightService.ShowMyFlights(user.UserId) ? ReturnValues.Succeed :ReturnValues.Failure ;
         }
-
-        _flightServices.ShowMyFlights(_user.UserId);
-        return (int)ReturnValues.Succeed;
+        catch (InvalidOperationException)
+        {
+            return ReturnValues.NotAuthenticated;
+        }
     }
 
-    private void FilterBookings(int? flightId = null, decimal? price = null, string? departureCountry = null,
-        string? destinationCountry = null, DateTime? departureDate = null, string? departureAirport = null,
-        string? arrivalAirport = null, int? passenger = null, int flightClass = 0)
+    private List<Flight>? FilterBookings(FlightFilterCriteria filterCriteria)
     {
-        if (_user == null)
+        try
         {
-            Console.WriteLine("You need to sign in before filtering bookings");
-            return;
-        }
+            var user = User;
+            if (user.Role == UserRole.Passenger)
+            {
+                Console.WriteLine("You must be a Manager to filter the bookings.");
+                return null;
+            }
 
-        if ((int)_user.Role == 0)
-        {
-            Console.WriteLine("Your must be a Manager to Filter the Booking");
-            return;
+           return _flightService.FilterFlights(filterCriteria);
         }
-        _flightServices.FilterFlights(flightId, price, departureCountry,
-            destinationCountry, departureDate, departureAirport, arrivalAirport, passenger, flightClass);
+        catch (InvalidOperationException)
+        {
+            Console.WriteLine("You need to sign in before filtering bookings.");
+            return null;
+        }
     }
 
     private List<string>? ImportFlights(string flightsCsv)
     {
-        if (_user == null)
+        try
         {
-            Console.WriteLine("You need to sign in before filtering bookings");
+            var user = User;
+            if (user.Role == UserRole.Passenger)
+            {
+                Console.WriteLine("You must be a Manager to filter the booking.");
+                return null;
+            }
+        
+            return _flightService.ImportFlightsFromCsvAsync(flightsCsv).GetAwaiter().GetResult();
+        }
+        catch (InvalidOperationException)
+        {
+            Console.WriteLine("You need to sign in before filtering bookings.");
             return null;
         }
-
-        if ((int)_user.Role == 0)
-        {
-            Console.WriteLine("Your must be a Manager to Filter the Booking");
-            return null;
-        }
-
-        return _flightServices.ImportFlightsFromCsv(flightsCsv);
     }
-
     public void SignInMenu()
     {
-        Console.WriteLine("1) Sign In");
-        Console.WriteLine("2) Sign Up");
-        Console.WriteLine("3) Exit");
+        _uiService.ShowSignInMenu();
     }
 
     public void PrintMenu()
     {
-        if (_user == null)
+        try
         {
-            Console.WriteLine("You need to sign in before accessing the menu.");
-            return;
-        }
+            var user = User;
+            bool isManager = user.Role == UserRole.Manager;
 
-        bool isManager = (int)_user.Role != 0;
+            _uiService.ShowMainMenu(user.Role);
 
-        Console.WriteLine("1) Search for Flights");
-        Console.WriteLine("2) Show My Flights");
-        Console.WriteLine("3) Book A Flight");
-        Console.WriteLine("4) Modify A Booking");
-        Console.WriteLine("5) Cancel Booking");
-
-        if (isManager)
-        {
-            Console.WriteLine("6) Filter Flights");
-            Console.WriteLine("7) Import Flights");
-        }
-
-        Console.Write("Enter your choice: ");
-        if (int.TryParse(Console.ReadLine(), out int choice))
-        {
+            int choice = _uiService.GetMenuChoice();
             HandleMenuChoice(choice, isManager);
         }
-        else
+        catch (InvalidOperationException)
         {
-            Console.WriteLine("Invalid input.");
+            _uiService.DisplayMessage("You need to sign in before accessing the menu.");
         }
     }
 
     private void HandleMenuChoice(int choice, bool isManager)
     {
-        switch (choice)
+        switch ((MainOptions)choice)
         {
-            case (int)MainOptions.Search:
-                var searchCriteria = GetFlightSearchCriteria();
-                SearchFlights(
-                    departureCountry: searchCriteria.departureCountry,
-                    destinationCountry: searchCriteria.destinationCountry,
-                    departureDate: searchCriteria.departureDate,
-                    departureAirport: searchCriteria.departureAirport,
-                    arrivalAirport: searchCriteria.arrivalAirport,
-                    flightClass: searchCriteria.flightClass,
-                    maxPrice: searchCriteria.maxPrice
-                );
+            case MainOptions.Search:
+                SearchFlights(GetFlightSearchCriteria());
                 break;
-            case (int)MainOptions.ShowMyFlights:
-                if (ShowMyFlights() == (int)ReturnValues.Succeed)
+            case MainOptions.ShowMyFlights:
+                if (ShowMyFlights() == ReturnValues.Failure)
                     Console.WriteLine("You have no booked flights.");
                 break;
-            case (int)MainOptions.Book:
-                Console.Write("Enter Flight ID to book: ");
-                if (int.TryParse(Console.ReadLine(), out int flightId))
+            case MainOptions.Book:
+                var flightId = GetFlightId();
+                if (flightId != -1)
                 {
-                    Console.WriteLine(Book(flightId) == 0 ? "Booking successful." : "Booking failed.");
+                    Console.WriteLine(Book(flightId) == ReturnValues.Succeed ? "Booking successful." : "Booking failed.");
                 }
                 else
                 {
@@ -217,45 +217,36 @@ public class ApplicationServices
                 }
 
                 break;
-            case (int)MainOptions.Modify:
-                Console.Write("Enter Flight ID to modify: ");
-                if (int.TryParse(Console.ReadLine(), out int modFlightId))
+            case MainOptions.Modify:
+
+                var modFlightId = GetFlightId();
+                if (modFlightId == -1)
                 {
-                    Console.Write("Flight Class (0 for Economy, 1 for Business, etc.): ");
-                    if (int.TryParse(Console.ReadLine(), out int flightClassId))
-                    {
-                        Console.WriteLine(ModifyFlightClass(modFlightId, flightClassId) == 0
-                            ? "Modification successful."
-                            : "Modification failed.");
-                    }
+                    break;
+                }
+                Console.Write("Flight Class (0 for Economy, 1 for Business, etc.): ");
+                bool isValidFlightClass = int.TryParse(Console.ReadLine(), out var flightClassId);
+                if (isValidFlightClass)
+                {
+                    bool isModificationSuccessful = ModifyFlightClass(modFlightId, flightClassId) == 0;
+                    Console.WriteLine(isModificationSuccessful ? "Modification successful." : "Modification failed.");
                 }
 
                 break;
-            case (int)MainOptions.Cancel:
-                Console.Write("Enter Flight ID to cancel: ");
-                if (int.TryParse(Console.ReadLine(), out int cancelFlightId))
+            case MainOptions.Cancel:
+                var cancelFlightId = GetFlightId();
+                if (cancelFlightId != -1)
                 {
-                    Console.WriteLine(Cancel(cancelFlightId) == 0
+                    Console.WriteLine(Cancel(cancelFlightId) == ReturnValues.Succeed
                         ? "Cancellation successful."
                         : "Cancellation failed.");
                 }
 
                 break;
-            case (int)MainOptions.Filter when isManager:
-                var filterCriteria = GetFlightFilterCriteria();
-                FilterBookings(
-                    flightId: filterCriteria.flightId,
-                    price: filterCriteria.price,
-                    departureCountry: filterCriteria.departureCountry,
-                    destinationCountry: filterCriteria.destinationCountry,
-                    departureDate: filterCriteria.departureDate,
-                    departureAirport: filterCriteria.departureAirport,
-                    arrivalAirport: filterCriteria.arrivalAirport,
-                    passenger: filterCriteria.passenger,
-                    flightClass: filterCriteria.flightClass
-                );
+            case MainOptions.Filter when isManager:
+                FilterBookings(GetFlightFilterCriteria());
                 break;
-            case (int)MainOptions.ImportFlights when isManager:
+            case MainOptions.ImportFlights when isManager:
                 Console.Write("Enter CSV file path to import flights: ");
                 string? csvPath = Console.ReadLine();
                 var errors = ImportFlights(csvPath!);
@@ -275,9 +266,21 @@ public class ApplicationServices
     }
 
 
-    static (int? flightId, decimal? price, string? departureCountry, string? destinationCountry, DateTime?
-        departureDate, string? departureAirport, string? arrivalAirport, int? passenger, int flightClass)
-        GetFlightFilterCriteria()
+    private int GetFlightId()
+    {
+        Console.Write("Enter The Flight ID : ");
+        if (int.TryParse(Console.ReadLine(), out var flightId))
+        {
+            return flightId;
+        }
+        else
+        {
+            Console.WriteLine("Invalid input. Please enter a valid Flight ID.");
+            return -1;
+        }
+    }
+
+    static FlightFilterCriteria GetFlightFilterCriteria()
     {
         Console.Write("Flight ID: ");
         int? flightId = TryParseInt(Console.ReadLine());
@@ -306,13 +309,21 @@ public class ApplicationServices
         Console.Write("Flight Class (0 for Economy, 1 for Business, 2 for First): ");
         int flightClass = TryParseInt(Console.ReadLine()) ?? 0;
 
-        return (flightId, price, departureCountry, destinationCountry, departureDate, departureAirport,
-            arrivalAirport, passenger, flightClass);
+        return new FlightFilterCriteria
+        {
+            FlightId = flightId,
+            Price = price,
+            DepartureCountry = departureCountry,
+            DestinationCountry = destinationCountry,
+            DepartureDate = departureDate,
+            DepartureAirport = departureAirport,
+            ArrivalAirport = arrivalAirport,
+            Passenger = passenger,
+            FlightClass = flightClass
+        };
     }
 
-
-    static (string? departureCountry, string? destinationCountry, DateTime? departureDate, string? departureAirport,
-        string? arrivalAirport, string? flightClass, decimal? maxPrice) GetFlightSearchCriteria()
+    static FlightSearchCriteria GetFlightSearchCriteria()
     {
         Console.Write("Departure Country: ");
         string? departureCountry = Console.ReadLine();
@@ -330,22 +341,30 @@ public class ApplicationServices
         string? arrivalAirport = Console.ReadLine();
 
         Console.Write("Flight Class: ");
-        string? flightClass = Console.ReadLine();
+        FlightClass? flightClass = (FlightClass)TryParseInt(Console.ReadLine());
 
         Console.Write("Max Price: ");
         decimal? maxPrice = TryParseDecimal(Console.ReadLine());
 
-        return (departureCountry, destinationCountry, departureDate, departureAirport, arrivalAirport, flightClass,
-            maxPrice);
+        return new FlightSearchCriteria
+        {
+            DepartureCountry = departureCountry,
+            DestinationCountry = destinationCountry,
+            DepartureDate = departureDate,
+            DepartureAirport = departureAirport,
+            ArrivalAirport = arrivalAirport,
+            FlightClass = flightClass,
+            MaxPrice = maxPrice
+        };
     }
 
-    static int? TryParseInt(string? input) => int.TryParse(input, out int value) ? value : null;
+    static int? TryParseInt(string? input) => int.TryParse(input, out var value) ? value : null;
 
     static decimal? TryParseDecimal(string? input) =>
-        decimal.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal value) ? value : null;
+        decimal.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out var value) ? value : null;
 
     static DateTime? TryParseDate(string? input) => DateTime.TryParseExact(input, "yyyy-MM-dd",
-        CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime date)
+        CultureInfo.InvariantCulture, DateTimeStyles.None, out var date)
         ? date
         : null;
 }

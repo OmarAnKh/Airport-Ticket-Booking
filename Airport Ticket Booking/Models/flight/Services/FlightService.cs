@@ -1,8 +1,9 @@
 using Airport_Ticket_Booking.Models.flight.Repositories.Interfaces;
+using Airport_Ticket_Booking.Models.flight.Services.interfaces;
 
 namespace Airport_Ticket_Booking.Models.flight.Services;
 
-public class FlightServices : IFlightServices
+public class FlightService : IFlightService
 {
     private List<Flight> _flights;
     private readonly IFlightSearchService _flightSearchService;
@@ -10,14 +11,13 @@ public class FlightServices : IFlightServices
     private readonly IFlightRepository _repository;
     private readonly IBookingManager _bookingManager;
 
-    public FlightServices(IFlightSearchService flightSearchService, IFlightRepository repository,
+    public FlightService(IFlightSearchService flightSearchService, IFlightRepository repository,
         IBookingManager bookingManager, IFlightFilterService flightFilterService)
     {
         _flightSearchService = flightSearchService;
         _repository = repository;
         _bookingManager = bookingManager;
         _flightFilterService = flightFilterService;
-
         _flights = _repository.GetAllData();
     }
 
@@ -26,24 +26,16 @@ public class FlightServices : IFlightServices
         return _flights;
     }
 
-    public void SearchFlights(string? departureCountry = null,
-        string? destinationCountry = null, DateTime? departureDate = null,
-        string? departureAirport = null, string? arrivalAirport = null, string? flightClass = null,
-        decimal? maxPrice = null)
+    public List<Flight> SearchFlights(FlightSearchCriteria searchCriteria)
     {
-        var domFlight = _flightSearchService.SearchFlights(_flights, departureCountry, destinationCountry,
-            departureDate,
-            departureAirport, arrivalAirport, flightClass, maxPrice);
-        _bookingManager.DisplayFlights(domFlight);
+        var domFlight = _flightSearchService.SearchFlights(_flights, searchCriteria);
+        return domFlight;
     }
 
-    public void FilterFlights(int? flightId = null, decimal? price = null, string? departureCountry = null,
-        string? destinationCountry = null, DateTime? departureDate = null, string? departureAirport = null,
-        string? arrivalAirport = null, int? passenger = null, int flightClass = 0)
+    public List<Flight> FilterFlights(FlightFilterCriteria filterCriteria)
     {
-        var filteredFlights = _flightFilterService.FilterFlights(_flights, flightId, price, departureCountry,
-            destinationCountry, departureDate, departureAirport, arrivalAirport, passenger, flightClass);
-        _bookingManager.DisplayFlights(filteredFlights);
+        var filteredFlights = _flightFilterService.FilterFlights(_flights,filterCriteria);
+        return filteredFlights;
     }
 
     public void DisplayFlights(List<Flight> flights)
@@ -56,7 +48,7 @@ public class FlightServices : IFlightServices
         var isBooked = _bookingManager.Book(_flights, flightId, userId);
         if (isBooked)
         {
-            _repository.Update(_flights);
+            _repository.UpdateAsync(_flights);
             return true;
         }
 
@@ -68,7 +60,7 @@ public class FlightServices : IFlightServices
         bool isModified = _bookingManager.ModifyClass(_flights, flightId, classNumber, userId);
         if (isModified)
         {
-            _repository.Update(_flights);
+            _repository.UpdateAsync(_flights);
             return true;
         }
 
@@ -81,24 +73,29 @@ public class FlightServices : IFlightServices
         var isBooked = _bookingManager.Cancel(_flights, flightId);
         if (isBooked)
         {
-            _repository.Update(_flights);
+            _repository.UpdateAsync(_flights);
             return true;
         }
 
         return false;
     }
 
-    public void ShowMyFlights(int userId)
+    public bool ShowMyFlights(int userId)
     {
         var myFlights = _flights.Where(flight => flight.PassengerId == userId).ToList();
+        if (!myFlights.Any())
+        {
+            return false;
+        }
         _bookingManager.DisplayFlights(myFlights);
+        return true;
     }
 
-    public List<string>? ImportFlightsFromCsv(string filePath)
+    public async Task<List<string>?> ImportFlightsFromCsvAsync(string filePath)
     {
-        var imports = _repository.ImportFlights(filePath);
+        var imports = await _repository.ImportFlightsAsync(filePath);  
         _flights = _flights.Concat((imports["Flights"] as List<Flight>)!).ToList();
-        _repository.Update(_flights);
+        await _repository.UpdateAsync(_flights);  
         return (List<string>?)imports["Errors"];
     }
 }

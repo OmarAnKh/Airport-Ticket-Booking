@@ -35,42 +35,11 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AType_002ECoreCLR_002Ecs_002Fl_003AC_0021_003FUsers_003FOmark_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F5cde391207de75962d7bacb899ca2bd3985c86911b152d185b58999a422bf0_003FType_002ECoreCLR_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AType_002Ecs_002Fl_003AC_0021_003FUsers_003FOmark_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F87c584767b46b5fd42769be76547105558e6690f785614efddca134b2d682_003FType_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AXunitTestInvoker_002Ecs_002Fl_003AC_0021_003FUsers_003FOmark_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003Fa3224cd781deec2964554220fc9e8d9b7291d373c23d1d64de7128ef192aa849_003FXunitTestInvoker_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=4d1727ff_002D27d2_002D471c_002Db427_002D2d5e58d28b93/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightSearchShould.Test1&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=534d3533_002D80f6_002D42d9_002D843d_002D4518c4356de8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1 #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightSearchShould.Test1&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=56382e3f_002Dcebc_002D4275_002D914c_002D5c793b506c42/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Test1 #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Or&gt;&#xD;
-    &lt;TestAncestor&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightFilterShould.FilterFlightsCorrectly&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightSearchShould.SearchFlightsCorrectly&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.Book_ShouldReturnTrue_WhenFlightIsAvailable&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.BookAFlightShould&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.ShouldBookFlightSuccessfully&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.Book_ShouldReturnFalse_WhenFlightIsAlreadyBooked&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.ModifyClass_ShouldReturnFalse_WhenUserIsNotPassenger&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.ModifyClass_ShouldReturnTrue_WhenClassChanges&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.Cancel_ShouldReturnFalse_WhenFlightIsNotBooked&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.BookingManagerShould.CancelShouldReturnTrueWhenFlightIsBooked&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightClassShould.CalculateFlightPrice_ShouldReturnExpectedPrice&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightClassShould.CalculateFlightPrice_ShouldThrowInvalidOperationException_WhenClassTransitionIsUnsupported&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.FlightClassShould.CalculateFlightPriceShouldReturnExpectedPrice&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.UserServiceShould.RegisterUserShould&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.UserServiceShould.RegisterUserShouldReturnFalseWhenUserExists&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.UserServiceShould.RegisterUser_Should_ReturnExpectedResult_BasedOnUserExistence&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.UserServiceShould.AuthenticateUserShouldReturnExpectedResult&lt;/TestId&gt;&#xD;
-      &lt;TestId&gt;xUnit::5CFD3FF6-B220-481C-A3C5-4268BD92299F::net9.0::Airport_Ticket_Booking.Test.UserServiceShould.AuthenticateUser_Should_ReturnExpectedResult&lt;/TestId&gt;&#xD;
-    &lt;/TestAncestor&gt;&#xD;
-    &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:BookingManagerShould.cs&lt;/ProjectFile&gt;&#xD;
-    &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:FlightClassShould.cs&lt;/ProjectFile&gt;&#xD;
-    &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:FlightFilterShould.cs&lt;/ProjectFile&gt;&#xD;
-    &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:FlightSearchShould.cs&lt;/ProjectFile&gt;&#xD;
-    &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:UserServiceShould.cs&lt;/ProjectFile&gt;&#xD;
-  &lt;/Or&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+	
+	
+	
+	
+	
+	
+	
+	</wpf:ResourceDictionary>

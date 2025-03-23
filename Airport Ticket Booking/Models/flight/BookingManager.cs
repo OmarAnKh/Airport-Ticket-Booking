@@ -36,6 +36,7 @@ public class BookingManager : IBookingManager
             }
 
             result.IsBook = false;
+            result.PassengerId = null;
             return true;
         }
         catch (Exception ex)
@@ -73,10 +74,7 @@ public class BookingManager : IBookingManager
     {
         foreach (var flight in flights)
         {
-            Console.WriteLine(
-                $"Flight: {flight.FlightId}, Departure Date: {flight.DepartureDate}, Departure Country:{flight.DepartureCountry}, " +
-                $"Destination Country:{flight.DestinationCountry}, Departure Airport: {flight.DepartureAirport}, Arrival Airport: {flight.ArrivalAirport}" +
-                $", Flight Class: {flight.Class}\n");
+            Console.WriteLine(flight.ToString());
         }
     }
 }

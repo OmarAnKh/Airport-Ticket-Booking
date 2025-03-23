@@ -4,14 +4,15 @@ namespace Airport_Ticket_Booking.Models.user.Repositories;
 public class UserRepository : IUserRepository
 {
     private static UserRepository? _instance;
-    private readonly static object Lock = new();
+    private static readonly object Lock = new();
     private readonly string? _fileString;
     private readonly List<User> _users;
     
     private UserRepository(string fileString)
     {
         _fileString = fileString;
-        _users = new List<User>();
+        _users= [];
+        _users = GetAllData();
     }
 
     public static UserRepository GetInstance(string fileString)

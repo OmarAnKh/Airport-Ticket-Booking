@@ -4,6 +4,7 @@ using Airport_Ticket_Booking.Models;
 using Airport_Ticket_Booking.Models.flight;
 using Airport_Ticket_Booking.Models.flight.Repositories;
 using Airport_Ticket_Booking.Models.flight.Services;
+using Airport_Ticket_Booking.Models.UI;
 using Airport_Ticket_Booking.Models.user.Repositories;
 using Airport_Ticket_Booking.Models.user.Services;
 
@@ -14,15 +15,16 @@ static class Program
     public static void Main()
     {
         var userRepository = UserRepository.GetInstance("../../../Data/users.txt");
-        var userServices = new UserService(userRepository);
+        var userService = new UserService(userRepository);
         var flightRepository = FlightRepository.GetInstance("../../../Data/flight.txt");
         var flightSearchServices = new FlightSearchService();
         var flightFilterService = new FlightFilterService();
         var bookingManager = new BookingManager();
-        var flightServices =
-            new FlightServices(flightSearchServices, flightRepository, bookingManager, flightFilterService);
+        var flightService =
+            new FlightService(flightSearchServices, flightRepository, bookingManager, flightFilterService);
+        var uiService = new UiService();
 
-        var appServices = ApplicationServices.GetInstance(flightServices, userServices);
+        var appServices = ApplicationServices.GetInstance(flightService, userService, uiService);
 
         while (true)
         {
@@ -37,9 +39,9 @@ static class Program
 
             string? username;
             string? password;
-            switch (option)
+            switch ((SignInMenu)option)
             {
-                case (int)SignInMenu.SignIn:
+                case SignInMenu.SignIn:
                     Console.Write("Enter username: ");
                     username = Console.ReadLine();
                     Console.Write("Enter password: ");
@@ -51,7 +53,7 @@ static class Program
                     }
 
                     break;
-                case (int)SignInMenu.SignUp:
+                case SignInMenu.SignUp:
                     Console.Write("Enter username: ");
                     username = Console.ReadLine();
                     Console.Write("Enter password: ");
@@ -66,7 +68,7 @@ static class Program
                     }
 
                     break;
-                case (int)SignInMenu.Exit:
+                case SignInMenu.Exit:
                     Console.WriteLine("Exiting... Goodbye!");
                     return;
                 default:
@@ -83,8 +85,12 @@ static class Program
         {
             Console.WriteLine("\nYour Menu Options:");
             appServices.PrintMenu();
-            Console.WriteLine("0)To exit\n1)To continue");
-            int.TryParse(Console.ReadLine(), out menuOption);
+            Console.WriteLine("0) To exit\n1) To continue");
+            if (int.TryParse(Console.ReadLine(), out menuOption) && menuOption == 0)
+            {
+                Console.WriteLine("Exiting... Goodbye!");
+                break;
+            }
         }
     }
 }

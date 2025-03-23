@@ -5,9 +5,8 @@ namespace Airport_Ticket_Booking.Models.flight;
 
 public class Flight
 {
-    public Flight(DateTime departureDate, decimal price, string? departureCountry, string? destinationCountry,
-        string departureAirport,
-        string? arrivalAirport, FlightClass @class, bool isBook, int? passengerId, int flightId = 0)
+    public Flight(DateTime departureDate, decimal price, string departureCountry, string destinationCountry,
+        string departureAirport, string arrivalAirport, FlightClass @class, bool isBook, int? passengerId, int flightId = 0)
     {
         DepartureDate = departureDate;
         Price = price;
@@ -28,13 +27,13 @@ public class Flight
     public DateTime DepartureDate { get; init; }
     public bool IsBook { get; set; }
 
-
-    public required string? DepartureCountry { get; init; }
-    public required string? DepartureAirport { get; init; }
-    public required string? DestinationCountry { get; init; }
-    public required string? ArrivalAirport { get; init; }
+    public string DepartureCountry { get; init; }
+    public string DepartureAirport { get; init; }
+    public string DestinationCountry { get; init; }
+    public string ArrivalAirport { get; init; }
     public int? PassengerId { get; set; }
     public FlightClass Class { get; set; }
+
 
     
     
@@ -52,5 +51,13 @@ public class Flight
                ArrivalAirport == obj.ArrivalAirport &&
                Class == obj.Class &&
                FlightId == obj.FlightId;
+    }
+    
+    public override string ToString()
+    {
+        return $"Flight ID: {FlightId}, Departure Date: {DepartureDate:yyyy-MM-dd}, " +
+               $"Departure Country: {DepartureCountry}, Destination Country: {DestinationCountry}, " +
+               $"Departure Airport: {DepartureAirport}, Arrival Airport: {ArrivalAirport}, " +
+               $"Class: {Class}, Price: {Price:C}, Booked: {IsBook}";
     }
 }

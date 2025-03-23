@@ -3,12 +3,12 @@ using AutoFixture;
 using FluentAssertions;
 
 namespace Airport_Ticket_Booking.Test;
-public class BookingManagerShould
+public class BookingManagerTest
 {
     private readonly Fixture _fixture;
     private readonly BookingManager _bookingManager;
 
-    public BookingManagerShould()
+    public BookingManagerTest()
     {
         _fixture = new Fixture();
         _bookingManager = new BookingManager();
@@ -18,13 +18,12 @@ public class BookingManagerShould
             .With(f => f.DepartureDate, DateTime.UtcNow.AddDays(random.Next(1, 31)))
             .With(f => f.Price, random.Next(100, 2000)));
     }
-    
 
     [Theory]
     [InlineData(false, 123, true)]
     [InlineData(true, 123, false)]
     [InlineData(true, null, false)]
-    public void ShouldBookFlightBasedOnBookingStateAndPassengerId(bool isBook, int passengerId, bool expectedBookingResult)
+    public void BookFlight_ShouldReturnExpectedResult_WhenBookingStateAndPassengerIdAreGiven(bool isBook, int passengerId, bool expectedBookingResult)
     {
         // Arrange
         var flights = _fixture.CreateMany<Flight>(5).ToList();
@@ -37,13 +36,11 @@ public class BookingManagerShould
         // Assert
         result.Should().Be(expectedBookingResult);
     }
-    
-    
-    
+
     [Theory]
     [InlineData(true, true)]
     [InlineData(false, false)]
-    public void ShouldCancelFlightBasedOnBookingStateAndPassengerId(bool isBook, bool expectedCancellationResult)
+    public void CancelFlight_ShouldReturnExpectedResult_WhenBookingStateIsGiven(bool isBook, bool expectedCancellationResult)
     {
         // Arrange
         var flights = _fixture.CreateMany<Flight>(5).ToList();
@@ -75,12 +72,12 @@ public class BookingManagerShould
         // Assert
         result.Should().Be(expectedCancellationResult);
     }
-    
+
     [Theory]
     [InlineData(FlightClass.Economy, FlightClass.Business, 200, 300, true)]
     [InlineData(FlightClass.Business, FlightClass.First, 500, 750, true)] 
     [InlineData(FlightClass.First, FlightClass.Economy, 700, 350, true)] 
-    public void ModifyClassShouldReturnTrueWhenClassChanges(FlightClass initialClass, FlightClass targetClass, decimal initialPrice, decimal expectedPrice, bool expectedResult)
+    public void ModifyFlightClass_ShouldUpdatePriceAndClass_WhenClassChanges(FlightClass initialClass, FlightClass targetClass, decimal initialPrice, decimal expectedPrice, bool expectedResult)
     {
         // Arrange
         var flights = _fixture.CreateMany<Flight>(5).ToList();
@@ -100,6 +97,4 @@ public class BookingManagerShould
         Assert.Equal(expectedPrice, flight.Price);
         Assert.True(expectedResult);
     }
-    
 }
-

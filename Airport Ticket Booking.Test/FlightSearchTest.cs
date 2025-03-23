@@ -6,12 +6,12 @@ using FluentAssertions;
 
 namespace Airport_Ticket_Booking.Test;
 
-public class FlightSearchShould
+public class FlightSearchTest
 {
     private readonly FlightSearchService _flightSearchService = new();
     private readonly Fixture _fixture = new();
 
-    public FlightSearchShould()
+    public FlightSearchTest()
     {
            var random = new Random();
                 _fixture.Customize<Flight>(flight => flight
@@ -20,7 +20,7 @@ public class FlightSearchShould
                     .With(f => f.IsBook, false));
     }
     [Fact]
-    public void SearchFlightsCorrectly()
+    public void SearchFlights_ShouldReturnNonEmptyList_WhenValidSearchCriteriaAreGiven()
     {
         // Arrange
         var flights = _fixture.CreateMany<Flight>(10).ToList();
@@ -28,10 +28,18 @@ public class FlightSearchShould
         var departureCountry = flights.First().DepartureCountry;
         var destinationCountry = flights.First().DestinationCountry;
 
+        var searchCriteria = new FlightSearchCriteria
+        {
+            DepartureDate = departureDate,
+            DepartureCountry = departureCountry,
+            DestinationCountry = destinationCountry
+        };
+
         // Act
-        var result = _flightSearchService.SearchFlights(flights:flights,departureDate:departureDate ,departureCountry:departureCountry,destinationCountry:destinationCountry);
+        var result = _flightSearchService.SearchFlights(flights, searchCriteria);
 
         // Assert
         result.Should().NotBeEmpty();
     }
+
 }

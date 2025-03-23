@@ -1,32 +1,28 @@
 using Airport_Ticket_Booking.Models.flight.Repositories.Interfaces;
+using Airport_Ticket_Booking.Models.flight.Services.interfaces;
 
 namespace Airport_Ticket_Booking.Models.flight.Services;
 
 public class FlightSearchService : IFlightSearchService
 {
-    public List<Flight> SearchFlights(List<Flight> flights, string? departureCountry = null,
-        string? destinationCountry = null, DateTime? departureDate = null,
-        string? departureAirport = null, string? arrivalAirport = null, string? flightClass = null,
-        decimal? maxPrice = null)
+    public List<Flight> SearchFlights(List<Flight> flights, FlightSearchCriteria searchCriteria)
     {
         var searchResults = flights.Where(flight =>
-            CheckSearchCriteria(departureCountry, destinationCountry, departureDate, departureAirport,
-                arrivalAirport, flightClass, maxPrice, flight)).ToList();
+            IsMatchingSearchCriteria(searchCriteria, flight)).ToList();
         return searchResults;
     }
-
-    private static bool CheckSearchCriteria(string? departureCountry, string? destinationCountry,
-        DateTime? departureDate, string? departureAirport, string? arrivalAirport, string? flightClass,
-        decimal? maxPrice, Flight flight)
+    private static bool IsMatchingSearchCriteria (FlightSearchCriteria searchCriteria, Flight flight)
     {
-        return ((string.IsNullOrEmpty(departureCountry) || flight.DepartureCountry == departureCountry) &&
-                (string.IsNullOrEmpty(destinationCountry) || flight.DestinationCountry == destinationCountry) &&
-                (!departureDate.HasValue || flight.DepartureDate.Date == departureDate.Value.Date) &&
-                (string.IsNullOrEmpty(departureAirport) || flight.DepartureAirport == departureAirport) &&
-                (string.IsNullOrEmpty(arrivalAirport) || flight.ArrivalAirport == arrivalAirport) &&
-                (string.IsNullOrEmpty(flightClass) || 
-                 (Enum.TryParse<FlightClass>(flightClass, out var parsedClass) && flight.Class == parsedClass)) &&
-                (!maxPrice.HasValue || flight.Price <= maxPrice) &&
+        return ((string.IsNullOrEmpty(searchCriteria.DepartureCountry) || flight.DepartureCountry == searchCriteria.DepartureCountry) &&
+                (string.IsNullOrEmpty(searchCriteria.DestinationCountry) || flight.DestinationCountry == searchCriteria.DestinationCountry) &&
+                (!searchCriteria.DepartureDate.HasValue || flight.DepartureDate.Date == searchCriteria.DepartureDate.Value.Date) &&
+                (string.IsNullOrEmpty(searchCriteria.DepartureAirport) || flight.DepartureAirport == searchCriteria.DepartureAirport) &&
+                (string.IsNullOrEmpty(searchCriteria.ArrivalAirport) || flight.ArrivalAirport == searchCriteria.ArrivalAirport) &&
+                (!searchCriteria.FlightClass.HasValue || flight.Class == searchCriteria.FlightClass) && 
+                (!searchCriteria.MaxPrice.HasValue || flight.Price <= searchCriteria.MaxPrice) &&
                 !flight.IsBook);
     }
+
+
+
 }

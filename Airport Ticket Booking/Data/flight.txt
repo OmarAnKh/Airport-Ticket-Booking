@@ -1,4 +1,4 @@
-11/10/2022 10:56:00 AM,-1185.38,Canada,UK,Vancouver,LHR,Business,False,,113
+11/10/2022 10:56:00 AM,790.25333333333333333333333333,Canada,UK,Vancouver,LHR,Economy,True,1,113
 12/12/2025 1:34:00 PM,1163.0,Brazil,Argentina,Sao Paulo,Buenos Aires,Business,True,170,114
 3/10/2026 9:23:00 PM,925.78,USA,Canada,JFK,Toronto,Business,True,122,115
 3/11/2025 4:41:00 AM,1029.14,India,China,Delhi,Beijing,First,True,177,116

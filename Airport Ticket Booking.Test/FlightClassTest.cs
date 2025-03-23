@@ -2,7 +2,7 @@ using Airport_Ticket_Booking.Models.flight;
 using FluentAssertions;
 
 namespace Airport_Ticket_Booking.Test;
-public class FlightClassShould
+public class FlightClassTest
 {
     public static IEnumerable<object[]> FlightPriceTestData()
     {
@@ -16,7 +16,7 @@ public class FlightClassShould
     
     [Theory]
     [MemberData(nameof(FlightPriceTestData))]
-    public void CalculateFlightPriceShouldReturnExpectedPrice(decimal currentPrice, FlightClass flightClass, FlightClass targetFlightClass, decimal expectedPrice)
+    public void CalculateFlightPrice_ShouldReturnExpectedPrice_WhenCurrentClassAndTargetClassAreGiven(decimal currentPrice, FlightClass flightClass, FlightClass targetFlightClass, decimal expectedPrice)
     {
         // Act
         decimal result = flightClass.CalculateFlightPrice(currentPrice, targetFlightClass);

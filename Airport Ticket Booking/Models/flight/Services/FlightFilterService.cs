@@ -1,24 +1,22 @@
-using Airport_Ticket_Booking.Models.flight.Repositories.Interfaces;
+using Airport_Ticket_Booking.Models.flight.Services.interfaces;
 
 namespace Airport_Ticket_Booking.Models.flight.Services;
 
 public class FlightFilterService : IFlightFilterService
 {
-    public List<Flight> FilterFlights(List<Flight> flights, int? flightId = null, decimal? price = null,
-        string? departureCountry = null,
-        string? destinationCountry = null, DateTime? departureDate = null, string? departureAirport = null,
-        string? arrivalAirport = null, int? passenger = null, int flightClass = -1)
+    public List<Flight> FilterFlights(List<Flight> flights, FlightFilterCriteria filterCriteria)
     {
         return flights.Where(flight =>
-            (!flightId.HasValue || flight.FlightId == flightId) &&
-            (!price.HasValue || flight.Price == price) &&
-            (string.IsNullOrEmpty(departureCountry) || flight.DepartureCountry == departureCountry) &&
-            (string.IsNullOrEmpty(destinationCountry) || flight.DestinationCountry == destinationCountry) &&
-            (!departureDate.HasValue || flight.DepartureDate.Date == departureDate.Value.Date) &&
-            (string.IsNullOrEmpty(departureAirport) || flight.DepartureAirport == departureAirport) &&
-            (string.IsNullOrEmpty(arrivalAirport) || flight.ArrivalAirport == arrivalAirport) &&
-            (!passenger.HasValue || flight.PassengerId == passenger) &&
-            (flightClass == -1 || flight.Class == (FlightClass)flightClass)
+            (!filterCriteria.FlightId.HasValue || flight.FlightId == filterCriteria.FlightId) &&
+            (!filterCriteria.Price.HasValue || flight.Price == filterCriteria.Price) &&
+            (string.IsNullOrEmpty(filterCriteria.DepartureCountry) || flight.DepartureCountry == filterCriteria.DepartureCountry) &&
+            (string.IsNullOrEmpty(filterCriteria.DestinationCountry) || flight.DestinationCountry == filterCriteria.DestinationCountry) &&
+            (!filterCriteria.DepartureDate.HasValue || flight.DepartureDate.Date == filterCriteria.DepartureDate.Value.Date) &&
+            (string.IsNullOrEmpty(filterCriteria.DepartureAirport) || flight.DepartureAirport == filterCriteria.DepartureAirport) &&
+            (string.IsNullOrEmpty(filterCriteria.ArrivalAirport) || flight.ArrivalAirport == filterCriteria.ArrivalAirport) &&
+            (!filterCriteria.Passenger.HasValue || flight.PassengerId == filterCriteria.Passenger) &&
+            (!filterCriteria.FlightClass.HasValue || flight.Class == (FlightClass)filterCriteria.FlightClass)
         ).ToList();
     }
+
 }

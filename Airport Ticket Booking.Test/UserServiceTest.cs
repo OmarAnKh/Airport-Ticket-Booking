@@ -5,7 +5,7 @@ using Moq;
 
 namespace Airport_Ticket_Booking.Test
 {
-    public class UserServiceShould
+    public class UserServiceTest
     {
         private readonly  Mock<IUserRepository> _userRepository = new();
         
