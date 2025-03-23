@@ -6,7 +6,7 @@ namespace Airport_Ticket_Booking.Models.flight;
 public class Flight
 {
     public Flight(DateTime departureDate, decimal price, string departureCountry, string destinationCountry,
-        string departureAirport, string arrivalAirport, FlightClass @class, bool isBook, int? passengerId, int flightId = 0)
+        string departureAirport, string arrivalAirport, FlightClass flightClass, bool isBook, int? passengerId, int flightId = 0)
     {
         DepartureDate = departureDate;
         Price = price;
@@ -15,7 +15,7 @@ public class Flight
         DepartureAirport = departureAirport;
         ArrivalAirport = arrivalAirport;
         PassengerId = passengerId;
-        Class = @class;
+        Class = flightClass;
         FlightId = flightId;
         IsBook = isBook;
     }

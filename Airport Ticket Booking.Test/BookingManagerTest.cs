@@ -52,7 +52,7 @@ public class BookingManagerTest
             destinationCountry: "UK",
             departureAirport: "JFK",
             arrivalAirport: "LHR",
-            @class: FlightClass.Business,
+            flightClass: FlightClass.Business,
             isBook: isBook,
             passengerId: 0,
             flightId: 1

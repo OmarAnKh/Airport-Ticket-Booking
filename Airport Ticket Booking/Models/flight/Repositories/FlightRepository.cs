@@ -55,13 +55,13 @@ public class FlightRepository : IFlightRepository
         var destinationCountry = flight[3];
         var departureAirport = flight[4];
         var arrivalAirport = flight[5];
-        var @class = Enum.Parse<FlightClass>(flight[6]);
+        var flightClass = Enum.Parse<FlightClass>(flight[6]);
         var isBook = bool.Parse(flight[7]);
         var passengerId = string.IsNullOrWhiteSpace(flight[8]) ? (int?)null : int.Parse(flight[8]);
         var flightId = int.Parse(flight[9]);
 
         return new Flight(departureDate, price, departureCountry, destinationCountry, departureAirport,
-            arrivalAirport, @class, isBook, passengerId, flightId);
+            arrivalAirport,flightClass, isBook, passengerId, flightId);
 
     }
 
@@ -116,7 +116,7 @@ public async Task<Dictionary<string, object?>> ImportFlightsAsync(string importF
         string destinationCountry = ValidationHelper.ValidateString(flightData[3], "Destination Country", lineNumber, errors);
         string departureAirport = ValidationHelper.ValidateString(flightData[4], "Departure Airport", lineNumber, errors);
         string arrivalAirport = ValidationHelper.ValidateString(flightData[5], "Arrival Airport", lineNumber, errors);
-        FlightClass @class = ValidationHelper.ValidateEnum<FlightClass>(flightData[6], "Flight Class", lineNumber, errors);
+        FlightClass flightClass = ValidationHelper.ValidateEnum<FlightClass>(flightData[6], "Flight Class", lineNumber, errors);
         bool isBook = ValidationHelper.ValidateBool(flightData[7], "IsBook", lineNumber, errors);
         int? passengerId = ValidationHelper.ValidateNullableInt(flightData[8], "Passenger ID", lineNumber, errors);
         int flightId = ValidationHelper.ValidateInt(flightData[9], "Flight ID", lineNumber, errors);
@@ -128,7 +128,7 @@ public async Task<Dictionary<string, object?>> ImportFlightsAsync(string importF
         else
         {
             importedFlights?.Add(new Flight(departureDate, price, departureCountry, destinationCountry,
-                departureAirport, arrivalAirport, @class, isBook, passengerId, flightId));
+                departureAirport, arrivalAirport, flightClass, isBook, passengerId, flightId));
         }
 
         lineNumber++;
