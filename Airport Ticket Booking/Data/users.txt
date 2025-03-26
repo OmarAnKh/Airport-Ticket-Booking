@@ -1,1 +1,5 @@
-1,Ahmad,$2a$11$x9JjbREYIsCA3i6Qo1Q.NeWlhLxpoj8hTRlC39lxZGDdhHq9T7l0y,Passenger
+1,Ahmad,$2a$11$x9JjbREYIsCA3i6Qo1Q.NeWlhLxpoj8hTRlC39lxZGDdhHq9T7l0y,Manager
+2,Omar,$2a$11$mjoNekruFP9YzfvfcnmF3uXbyytgL1FE9swtPMIwWlDAJvPQsLKle,Passenger
+3,Amjad,$2a$11$Fa9JUSs/zMCYxrW5u3PxCOpqGCzuC3xtV1JC5bubL0RDcKjsuPvnC,Passenger
+4,Abood,$2a$11$L/NVPEvlNI1q48hWFBhbJuLAMCzhMBv5ZkMh6JOoQEa2sQHMDcIa2,Passenger
+5,Obada,$2a$11$h2BcdqatCT8bAsapCViyZOJQrjMrqO2CXFjlsO6baaxSa2PFUAVg.,Passenger

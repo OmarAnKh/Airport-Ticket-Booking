@@ -1,0 +1,50 @@
+03/13/2025 09:42:00 AM,1493.56,USA,Canada,JFK,Toronto,Business,False,,
+,951.97,Germany,Italy,Munich,Fiumicino,Economy,False,,112
+11/10/2025 10:56:00 AM,1185.38,Canada,UK,Vancouver,LHR,Business,False,,113
+12/12/2025 01:34:00 PM,1163.0,Brazil,Argentina,Sao Paulo,Buenos Aires,Business,True,170,114
+03/10/2026 09:23:00 PM,925.78,USA,Canada,JFK,Toronto,Business,True,122,115
+03/11/2025 04:41:00 AM,1029.14,India,China,Delhi,Beijing,First,True,177,116
+01/12/2026 09:12:00 PM,1443.85,USA,Canada,JFK,Toronto,Business,True,162,117
+09/17/2025 04:27:00 AM,1001.71,Australia,Japan,Sydney,Haneda,First,True,181,118
+06/24/2025 10:08:00 AM,426.76,Brazil,Argentina,Sao Paulo,Buenos Aires,First,True,100,119
+08/07/2025 09:56:00 AM,667.0,France,Spain,Charles de Gaulle,Barceló,Business,True,109,120
+03/05/2026 09:55:00 PM,989.69,South Korea,USA,Incheon,LAX,First,False,,121
+03/20/2025 05:53:00 AM,1167.45,Italy,USA,Venice,LaGuardia,First,False,,122
+03/29/2025 11:42:00 AM,379.43,Canada,UK,Vancouver,LHR,First,True,184,123
+04/19/2025 10:41:00 PM,934.26,France,Spain,Charles de Gaulle,Barceló,First,False,,124
+02/05/2026 05:46:00 PM,1108.73,India,China,Delhi,Beijing,Business,False,,125
+12/01/2025 11:23:00 AM,460.62,Brazil,Argentina,Sao Paulo,Buenos Aires,First,True,137,126
+06/25/2025 11:21:00 PM,1260.49,UK,Germany,Heathrow,Frankfurt,Business,False,,127
+04/02/2025 05:57:00 AM,1096.32,Brazil,Argentina,Sao Paulo,Buenos Aires,First,True,108,128
+12/26/2025 10:52:00 AM,499.59,Brazil,Argentina,Sao Paulo,Buenos Aires,Economy,False,,129
+08/12/2025 04:02:00 PM,1151.24,UK,Germany,Heathrow,Frankfurt,First,True,107,130
+11/02/2025 09:21:00 AM,864.71,Brazil,Argentina,Sao Paulo,Buenos Aires,Economy,True,100,131
+04/20/2025 08:43:00 PM,1368.96,UK,Germany,Heathrow,Frankfurt,First,True,186,132
+02/21/2026 04:54:00 PM,1335.39,Australia,Japan,Sydney,Haneda,First,True,109,133
+03/21/2025 05:22:00 PM,,Canada,UK,Vancouver,LHR,Economy,True,126,134
+06/23/2025 05:33:00 PM,387.2,USA,Canada,JFK,Toronto,Economy,True,154,135
+04/25/2025 09:06:00 AM,1369.32,UK,Germany,Heathrow,Frankfurt,First,True,124,136
+03/09/2026 03:48:00 AM,760.13,Australia,Japan,Sydney,Haneda,Business,True,199,137
+04/25/2025 04:09:00 PM,1113.86,India,China,Delhi,Beijing,Business,True,154,138
+10/15/2025 10:41:00 AM,656.57,India,China,Delhi,Beijing,Business,True,193,139
+10/24/2025 04:44:00 AM,1111.1,India,China,Delhi,Beijing,Economy,False,,140
+02/26/2026 09:18:00 AM,1313.05,USA,Canada,JFK,Toronto,Economy,True,109,141
+02/03/2026 06:12:00 PM,277.63,France,Spain,Charles de Gaulle,Barceló,First,False,,142
+10/10/2025 04:35:00 PM,1134.3,Germany,Italy,Munich,Fiumicino,First,True,,143
+12/03/2025 12:32:00 PM,1081.87,Germany,Italy,Munich,Fiumicino,First,False,,144
+03/11/2025 05:53:00 PM,391.54,Canada,UK,Vancouver,LHR,First,True,138,145
+01/29/2026 04:40:00 AM,327.14,Germany,Italy,Munich,Fiumicino,First,True,161,146
+10/25/2025 04:59:00 PM,1333.54,Australia,Japan,Sydney,Haneda,Economy,True,138,147
+03/17/2025 05:12:00 PM,577.2,Australia,Japan,Sydney,Haneda,Economy,False,,148
+12/21/2025 10:56:00 PM,572.17,UK,Germany,Heathrow,Frankfurt,Business,True,106,149
+,582.98,South Korea,USA,Incheon,LAX,Business,True,118,150
+04/17/2025 01:24:00 PM,684.03,India,China,Delhi,Beijing,Business,False,,151
+10/06/2025 08:46:00 AM,220.04,South Korea,USA,Incheon,LAX,Economy,False,,152
+01/12/2026 11:08:00 AM,226.8,France,Spain,Charles de Gaulle,Barceló,First,False,,153
+11/03/2025 09:52:00 AM,640.73,Italy,USA,Venice,LaGuardia,Business,False,,154
+01/02/2026 08:15:00 AM,791.06,France,Spain,Charles de Gaulle,Barceló,First,True,172,155
+11/04/2025 11:15:00 PM,1263.6,France,Spain,Charles de Gaulle,Barceló,First,False,,156
+03/23/2025 07:21:00 PM,735.12,USA,Canada,JFK,Toronto,Economy,True,145,157
+05/29/2025 08:15:00 AM,451.48,India,China,Delhi,Beijing,Economy,True,148,158
+04/02/2025 04:26:00 PM,959.22,France,Spain,Charles de Gaulle,Barceló,,False,,159
+10/07/2025 12:10:00 AM,949.83,Italy,USA,Venice,LaGuardia,Economy,True,120,
