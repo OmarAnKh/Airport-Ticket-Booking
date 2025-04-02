@@ -35,6 +35,21 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AType_002ECoreCLR_002Ecs_002Fl_003AC_0021_003FUsers_003FOmark_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F5cde391207de75962d7bacb899ca2bd3985c86911b152d185b58999a422bf0_003FType_002ECoreCLR_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AType_002Ecs_002Fl_003AC_0021_003FUsers_003FOmark_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003F87c584767b46b5fd42769be76547105558e6690f785614efddca134b2d682_003FType_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=7020124F_002D9FFC_002D4AC3_002D8F3D_002DAAB8E0240759_002Ff_003AXunitTestInvoker_002Ecs_002Fl_003AC_0021_003FUsers_003FOmark_003FAppData_003FRoaming_003FJetBrains_003FRider2024_002E3_003Fresharper_002Dhost_003FSourcesCache_003Fa3224cd781deec2964554220fc9e8d9b7291d373c23d1d64de7128ef192aa849_003FXunitTestInvoker_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=09e7af75_002D9c58_002D434d_002D8b5b_002Dc5e19016013f/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from FlightClassTest.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:FlightClassTest.cs&lt;/ProjectFile&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=49de037a_002D0cb8_002D408c_002Dbe59_002D501f50fb00b5/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from FlightSearchTest.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="D:\VS-20230610T091643Z-001\VS\course\foothill\C#\Airport-Ticket-Booking\Airport Ticket Booking.Test" Presentation="&amp;lt;Airport Ticket Booking.Test&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=610c4ef2_002Df958_002D48a1_002D898a_002Dec47902c565b/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from BookingManagerTest.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:BookingManagerTest.cs&lt;/ProjectFile&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=67d7af0f_002D16cf_002D4234_002D9c2c_002D3ae53637aaeb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from FlightFilterTest.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:FlightFilterTest.cs&lt;/ProjectFile&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a87199c4_002D7ac3_002D4740_002D9d19_002D59822b9a023e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from UserServiceTest.cs" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;ProjectFile&gt;5CFD3FF6-B220-481C-A3C5-4268BD92299F/f:UserServiceTest.cs&lt;/ProjectFile&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	
 	
 	
