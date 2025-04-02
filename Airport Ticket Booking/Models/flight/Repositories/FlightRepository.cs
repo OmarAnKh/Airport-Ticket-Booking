@@ -5,7 +5,7 @@ namespace Airport_Ticket_Booking.Models.flight.Repositories;
 public class FlightRepository : IFlightRepository
 {
     private readonly string _filePath;
-    private static readonly Lock Lock = new Lock();
+    private static readonly object Lock = new object();
     private static FlightRepository? _instance;
 
     private FlightRepository(string filePath)
