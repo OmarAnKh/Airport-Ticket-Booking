@@ -27,7 +27,7 @@ public class ApplicationServices
         }
     }
 
-    private static readonly Lock Lock = new();
+    private static readonly object Lock = new();
     private static ApplicationServices? _instance;
 
     private ApplicationServices(IFlightService flightService, IUserService userService, IUiService uiService)
